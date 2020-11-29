@@ -15,15 +15,16 @@ public class InstructionDancer : MonoBehaviour
 
     [SerializeField]
     /// <summary>
-    /// フレーズの最長時間、減少する
+    /// フレーズの最短時間
     /// </summary>
-    private int phraseTimeMax = 2;
+    private int phraseTimeMin = 10;
 
     [SerializeField]
     /// <summary>
-    /// フレーズの最短時間
+    /// フレーズの最長時間、減少する
     /// </summary>
-    private int phraseTimeMin = 1;
+    private int phraseTimeMax = 15;
+
 
     [SerializeField]
     /// <summary>
@@ -39,7 +40,7 @@ public class InstructionDancer : MonoBehaviour
     private Phrase CreatePhrase()
     {
         //定められた定数の範囲の乱数でこのフレーズのステップ数とステップ時間を決定
-        int stepCount = Random.Range(3, stepCountMax + 1);
+        int stepCount = Random.Range(1, stepCountMax + 1);
         int phraseTime = Random.Range(phraseTimeMin, phraseTimeMax);
 
         return new Phrase(stepCount, phraseTime);
@@ -68,17 +69,24 @@ public class InstructionDancer : MonoBehaviour
     /// <summary>
     /// １フレーズ分の時間をあけてそれぞれに指示を送る
     /// </summary>
-    /// <param name="_onePhrase">踊らせたいフレーズ</param>
-    /// <returns></returns>
+    /// <param name = "_onePhrase" > 踊らせたいフレーズ </ param >
+    /// < returns ></ returns >
     private IEnumerator Dance(Phrase _onePhrase)
     {
+        float phraseTime = (float)_onePhrase.phraseTime;
         //一人目からフレーズを渡し踊らせ、１フレーズ分の時間が経過すると次のダンサーに踊らせる
         //ダンサーの数繰り返す。
         foreach (var dancer in autoDancers)
         {
             dancer.Dance(_onePhrase);
-            //１フレーズ分待たせる            
-            yield return new WaitForSeconds(_onePhrase.phraseTime);
+            ////１フレーズ分待たせる    
+            while (phraseTime > 0)
+            {
+                // frameで指定したフレームだけループ
+                yield return null;
+                phraseTime -= 0.016f;
+            }
+            //yield return new WaitForSeconds(phraseTime);
         }
     }
 }

@@ -4,33 +4,20 @@ using UnityEngine;
 
 public class AutoDancer : MonoBehaviour
 {
+    private Animator animator;
+
+    private void Start()
+    {
+        animator = GetComponent<Animator>();
+    }
+
     /// <summary>
     /// 踊る
     /// </summary>
     /// <param name="_phrase">踊らせたいフレーズ</param>
     public void Dance(Phrase _phrase)
     {
-        //踊らせたいアニメーター
-        Animator animator = GetComponent<Animator>();
-        //ステップの間隔　全体時間/回数
-        float stepInterval = (float)_phrase.phraseTime / (float)_phrase.stepCount;
-
-        //Debug.Log(_phrase.stepTable.Count);
-        //ステップ情報を基にアニメーションさせる
-        foreach (var step in _phrase.stepTable)
-        {
-            if (step == StepDirection.LeftStep)
-            {
-                animator.SetTrigger("Left");
-            }
-            else if (step == StepDirection.RightStep)
-            {
-                animator.SetTrigger("Right");
-            }
-            //ステップの間隔を待つ
-            StartCoroutine("WaitForFrame", stepInterval);
-            Debug.Log("待機終わり");
-        }
+        StartCoroutine("WaitForFrame",  _phrase);
     }
 
     /// <summary>
@@ -38,16 +25,37 @@ public class AutoDancer : MonoBehaviour
     /// </summary>
     /// <param name="_frame">待ちたいフレーム数</param>
     /// <returns></returns>
-    public IEnumerator WaitForFrame(float _frame)
+    public IEnumerator WaitForFrame(Phrase _phrase)
     {
-        // ループ
-        while (_frame > 0)
+        //ステップの間隔　全体時間/回数
+        float stepInterval = (float)_phrase.phraseTime / (float)_phrase.stepCount;
+
+        //ステップ情報を基にアニメーションさせる
+        foreach (var step in _phrase.stepTable)
         {
-            // frameで指定したフレームだけループ
-            yield return null;
-            Debug.Log(_frame);
-            _frame -= 0.16f;
+            if (step == StepDirection.LeftStep)
+            {
+                animator.SetTrigger("Left");
+                Debug.Log("Left");
+            }
+            else if (step == StepDirection.RightStep)
+            {
+                animator.SetTrigger("Right");
+                Debug.Log("Right");
+
+            }
+            //ステップの間隔を待つ
+            // ループ
+            while (stepInterval > 0)
+            {
+                // frameで指定したフレームだけループ
+                yield return null;
+                stepInterval -= 0.016f;
+            }
+            stepInterval = (float)_phrase.phraseTime / (float)_phrase.stepCount;
+            //StartCoroutine("WaitForFrame", stepInterval);
         }
+
     }
 }
 
