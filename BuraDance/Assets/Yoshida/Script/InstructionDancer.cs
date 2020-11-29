@@ -17,7 +17,7 @@ public class InstructionDancer : MonoBehaviour
     /// <summary>
     /// フレーズの最短時間
     /// </summary>
-    private float phraseTimeMax = 6.0f;
+    private float phraseTimeMax = 8.0f;
 
     [SerializeField]
     /// <summary>
