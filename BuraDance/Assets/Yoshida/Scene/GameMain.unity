@@ -280,8 +280,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stepCountMax: 3
-  phraseTimeMin: 10
-  phraseTimeMax: 15
+  phraseTimeMax: 8
   autoDancers:
   - {fileID: 1617859036}
   - {fileID: 1909553869}
