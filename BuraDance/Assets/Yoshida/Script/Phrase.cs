@@ -5,10 +5,10 @@ using UnityEngine;
 /// <summary>
 /// ステップの方向
 /// </summary>
-enum StepDirection
+public enum StepDirection
 {
     /// <summary>
-    /// ステップしてない ミス
+    /// ステップしていない
     /// </summary>
     NoStep,
     /// <summary>
@@ -41,7 +41,7 @@ public struct Phrase
     /// <summary>
     /// このフレーズ内でのステップ一覧
     /// </summary>
-    List<StepDirection> stepTable;
+   public readonly IList<StepDirection> stepTable;
 
     /// <summary>
     /// フレーズ生成
@@ -68,10 +68,6 @@ public struct Phrase
                 stepTable.Add(StepDirection.RightStep);
             }
         }
-
-        Debug.Log(this.stepCount);
-        Debug.Log(this.phraseTime);
-        Debug.Log(this.stepTable);
-
     }
+
 }
