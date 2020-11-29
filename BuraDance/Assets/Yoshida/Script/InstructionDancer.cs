@@ -11,13 +11,13 @@ public class InstructionDancer : MonoBehaviour
     /// <summary>
     /// ステップの最大数、増加する
     /// </summary>
-    private int stepCountMax=3;
+    private int stepCountMax = 3;
 
     [SerializeField]
     /// <summary>
     /// フレーズの最長時間、減少する
     /// </summary>
-    private int phraseTimeMax=3;
+    private int phraseTimeMax = 2;
 
     [SerializeField]
     /// <summary>
@@ -30,7 +30,7 @@ public class InstructionDancer : MonoBehaviour
     /// Phraseの情報に合わせお手本として踊るダンサー達
     /// Inspectorから追加する必要あり
     /// </summary>
-    List<AutoDancer> autoDancers=new List<AutoDancer>();
+    List<AutoDancer> autoDancers = new List<AutoDancer>();
 
     /// <summary>
     /// ダンサーそれぞれに躍らせるフレーズを生成
@@ -39,7 +39,7 @@ public class InstructionDancer : MonoBehaviour
     private Phrase CreatePhrase()
     {
         //定められた定数の範囲の乱数でこのフレーズのステップ数とステップ時間を決定
-        int stepCount = Random.Range(1, stepCountMax+1);
+        int stepCount = Random.Range(3, stepCountMax + 1);
         int phraseTime = Random.Range(phraseTimeMin, phraseTimeMax);
 
         return new Phrase(stepCount, phraseTime);
@@ -54,12 +54,13 @@ public class InstructionDancer : MonoBehaviour
         Phrase onePhrase = CreatePhrase();
 
         //踊らせる相手がゼロではないか
-        if(autoDancers.Count<=0)
+        if (autoDancers.Count <= 0)
         {
             Debug.Log("Error! no Auto Dancer!");
             return;
         }
 
+        StopCoroutine("Dance");
         //踊らせる
         StartCoroutine("Dance", onePhrase);
     }
@@ -76,7 +77,7 @@ public class InstructionDancer : MonoBehaviour
         foreach (var dancer in autoDancers)
         {
             dancer.Dance(_onePhrase);
-            //１フレーズ分待たせる
+            //１フレーズ分待たせる            
             yield return new WaitForSeconds(_onePhrase.phraseTime);
         }
     }

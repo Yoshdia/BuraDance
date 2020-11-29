@@ -54,10 +54,10 @@ public struct Phrase
         stepTable = new List<StepDirection>();
 
         //左右のステップを乱数で生成する
-        for (int i = 1; i < this.stepCount; i++)
+        for (int i = 1; i <= this.stepCount; i++)
         {
-            Random random = new Random();
-            if (Random.Range(0f, 2f) == 0)
+            int randam = Random.Range(0, 2);
+            if (randam == 1)
             {
                 //左
                 stepTable.Add(StepDirection.LeftStep);
@@ -68,6 +68,7 @@ public struct Phrase
                 stepTable.Add(StepDirection.RightStep);
             }
         }
+        Debug.Log(stepTable.Count);
     }
 
 }
