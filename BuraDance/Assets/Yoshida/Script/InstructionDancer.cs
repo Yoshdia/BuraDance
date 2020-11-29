@@ -17,14 +17,7 @@ public class InstructionDancer : MonoBehaviour
     /// <summary>
     /// フレーズの最短時間
     /// </summary>
-    private int phraseTimeMin = 10;
-
-    [SerializeField]
-    /// <summary>
-    /// フレーズの最長時間、減少する
-    /// </summary>
-    private int phraseTimeMax = 15;
-
+    private float phraseTimeMax = 6.0f;
 
     [SerializeField]
     /// <summary>
@@ -41,9 +34,8 @@ public class InstructionDancer : MonoBehaviour
     {
         //定められた定数の範囲の乱数でこのフレーズのステップ数とステップ時間を決定
         int stepCount = Random.Range(1, stepCountMax + 1);
-        int phraseTime = Random.Range(phraseTimeMin, phraseTimeMax);
 
-        return new Phrase(stepCount, phraseTime);
+        return new Phrase(stepCount, phraseTimeMax);
     }
 
     /// <summary>

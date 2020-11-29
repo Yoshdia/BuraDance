@@ -36,7 +36,7 @@ public struct Phrase
     /// このフレーズの時間 
     /// 1キャラクターに用意されたステップ時間
     /// </summary>
-    public readonly int phraseTime;
+    public readonly float phraseTime;
 
     /// <summary>
     /// このフレーズ内でのステップ一覧
@@ -47,7 +47,7 @@ public struct Phrase
     /// フレーズ生成
     /// </summary>
     /// <param name="_stepCount">ステップの数</param>
-    public Phrase(int _stepCount,int _phraseTime)
+    public Phrase(int _stepCount,float _phraseTime)
     {
         this.stepCount = _stepCount;
         this.phraseTime = _phraseTime;
