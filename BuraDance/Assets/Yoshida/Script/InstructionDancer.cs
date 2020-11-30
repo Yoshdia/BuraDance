@@ -66,19 +66,21 @@ public class InstructionDancer : MonoBehaviour
     private IEnumerator Dance(Phrase _onePhrase)
     {
         float phraseTime = (float)_onePhrase.phraseTime;
+        float frame = phraseTime;
         //一人目からフレーズを渡し踊らせ、１フレーズ分の時間が経過すると次のダンサーに踊らせる
         //ダンサーの数繰り返す。
         foreach (var dancer in autoDancers)
         {
             dancer.Dance(_onePhrase);
             ////１フレーズ分待たせる    
-            while (phraseTime > 0)
+            while (frame > 0)
             {
                 // frameで指定したフレームだけループ
                 yield return null;
-                phraseTime -= 0.016f;
+                frame -= 0.016f;
             }
-            //yield return new WaitForSeconds(phraseTime);
+            frame = phraseTime;
         }
+        Debug.Log("DanceEnd");
     }
 }

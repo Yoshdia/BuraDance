@@ -20,22 +20,30 @@ public class AutoDancer : MonoBehaviour
     /// <param name="_phrase">踊らせたいフレーズ</param>
     public void Dance(Phrase _phrase)
     {
-        StartCoroutine("WaitForFrame",  _phrase);
+        StartCoroutine("WaitForFrame", _phrase);
     }
 
-  /// <summary>
-  /// ステップをステップ間隔分待たせながらすべて再生させる
-  /// </summary>
-  /// <param name="_phrase">再生させるフレーム</param>
-  /// <returns></returns>
+    /// <summary>
+    /// ステップをステップ間隔分待たせながらすべて再生させる
+    /// </summary>
+    /// <param name="_phrase">再生させるフレーム</param>
+    /// <returns></returns>
     public IEnumerator WaitForFrame(Phrase _phrase)
     {
         //ステップの間隔　全体時間/回数
-        float stepInterval = (float)_phrase.phraseTime / (float)_phrase.stepCount;
+        float stepInterval = (float)_phrase.phraseTime / ((float)_phrase.stepCount/*-1*/);
 
         //ステップ情報を基にアニメーションさせる
         foreach (var step in _phrase.stepTable)
         {
+            //if (step == StepDirection.NoStep)
+            //{
+            //    break;
+            //}
+            //else
+            //{
+            //    stepInterval = (float)_phrase.phraseTime / (float)_phrase.stepCount;
+            //}
             //左
             if (step == StepDirection.LeftStep)
             {
@@ -47,7 +55,6 @@ public class AutoDancer : MonoBehaviour
             {
                 animator.SetTrigger("Right");
                 Debug.Log("Right");
-
             }
             //ステップの間隔を待つ
             // ループ
@@ -57,9 +64,8 @@ public class AutoDancer : MonoBehaviour
                 yield return null;
                 stepInterval -= 0.016f;
             }
-            //stepInterval = (float)_phrase.phraseTime / (float)_phrase.stepCount;
+            stepInterval = (float)_phrase.phraseTime / (float)_phrase.stepCount;
         }
-
     }
 }
 
