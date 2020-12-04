@@ -72,7 +72,7 @@ public class MatchDancer : MonoBehaviour
             if (myStep == modelPhrase.stepTable[stepNumber])
             {
                 Debug.Log("matchStep");
-                if(stepNumber+1==modelPhrase.stepTable.Count-1)
+                if (stepNumber + 1 == modelPhrase.stepTable.Count - 1)
                 {
                     return 1;
                 }

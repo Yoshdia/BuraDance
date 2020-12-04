@@ -27,26 +27,30 @@ public class InstructionDancer : MonoBehaviour
     List<AutoDancer> autoDancers = new List<AutoDancer>();
 
     [SerializeField]
+    /// <summary>
+    /// ダンスを真似するクラス
+    /// </summary>    
     MatchDancer matchDancer=default;
 
-    bool endAutoDance;
-
-    private void Start()
-    {
-        //matchDancer = GetComponent<MatchDancer>();
-        endAutoDance = false;
-    }
+    /// <summary>
+    /// AutoDancerの処理が終わったフラグ
+    /// </summary>
+    bool endAutoDance=false;
 
     private void Update()
     {
+        //AutoDancerの処理が終了しMatchDancerとのダンスを照合する
         if (endAutoDance)
         {
+            //MatchDancerに踊らせその入力を取得
             int danceResult = matchDancer.CheckModelDance();
+            //全て成功
             if (danceResult==1)
             {
                 endAutoDance = false;
                 Debug.Log("Dance Clear!");
             }
+            //失敗
             else if(danceResult==-1)
             {
                 endAutoDance = false;
@@ -82,8 +86,10 @@ public class InstructionDancer : MonoBehaviour
             return;
         }
 
+        //前回までのダンスを終わらせる
         endAutoDance = false;
         StopCoroutine("Dance");
+
         //踊らせる
         StartCoroutine("Dance", onePhrase);
     }
@@ -111,7 +117,9 @@ public class InstructionDancer : MonoBehaviour
             }
             frame = phraseTime;
         }
+        //ダンスを真似するクラスにフレーズを渡す
         matchDancer.ResetPhrase(_onePhrase);
+        //AutoDancerの処理が終了
         endAutoDance = true;
         Debug.Log("DanceEnd");
     }
