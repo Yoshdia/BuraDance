@@ -265,12 +265,12 @@ GameObject:
   - component: {fileID: 190254038}
   - component: {fileID: 190254037}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &190254037
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -280,7 +280,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 190254036}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 92977d30a123423448d50e0215265fa9, type: 3}
+  m_Script: {fileID: 11500000, guid: 4e9cc54f36d28d54c8de82be57947804, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!95 &190254038
@@ -410,6 +410,7 @@ MonoBehaviour:
   autoDancers:
   - {fileID: 1617859036}
   - {fileID: 1909553869}
+  matchDancer: {fileID: 190254037}
 --- !u!4 &467744241
 Transform:
   m_ObjectHideFlags: 0

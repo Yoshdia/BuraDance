@@ -20,7 +20,7 @@ public class AutoDancer : MonoBehaviour
     /// <param name="_phrase">踊らせたいフレーズ</param>
     public void Dance(Phrase _phrase)
     {
-        StartCoroutine("WaitForFrame", _phrase);
+        StartCoroutine("AutoDance", _phrase);
     }
 
     /// <summary>
@@ -28,7 +28,7 @@ public class AutoDancer : MonoBehaviour
     /// </summary>
     /// <param name="_phrase">再生させるフレーム</param>
     /// <returns></returns>
-    public IEnumerator WaitForFrame(Phrase _phrase)
+    public IEnumerator AutoDance(Phrase _phrase)
     {
         //ステップの間隔　全体時間/回数
         float stepInterval = (float)_phrase.phraseTime / ((float)_phrase.stepCount);

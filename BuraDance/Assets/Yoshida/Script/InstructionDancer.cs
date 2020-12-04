@@ -43,7 +43,7 @@ public class InstructionDancer : MonoBehaviour
         if (endAutoDance)
         {
             //MatchDancerに踊らせその入力を取得
-            int danceResult = matchDancer.CheckModelDance();
+            int danceResult = matchDancer.VerifyModelDance();
             //全て成功
             if (danceResult==1)
             {
@@ -88,10 +88,10 @@ public class InstructionDancer : MonoBehaviour
 
         //前回までのダンスを終わらせる
         endAutoDance = false;
-        StopCoroutine("Dance");
+        StopCoroutine("UseDancers");
 
         //踊らせる
-        StartCoroutine("Dance", onePhrase);
+        StartCoroutine("UseDancers", onePhrase);
     }
 
     /// <summary>
@@ -99,10 +99,12 @@ public class InstructionDancer : MonoBehaviour
     /// </summary>
     /// <param name = "_onePhrase" > 踊らせたいフレーズ </ param >
     /// < returns ></ returns >
-    private IEnumerator Dance(Phrase _onePhrase)
+    private IEnumerator UseDancers(Phrase _onePhrase)
     {
         float phraseTime = (float)_onePhrase.phraseTime;
         float frame = phraseTime;
+        //AutoDancerに指示した回数
+        int dancerCount=0;
         //一人目からフレーズを渡し踊らせ、１フレーズ分の時間が経過すると次のダンサーに踊らせる
         //ダンサーの数繰り返す。
         foreach (var dancer in autoDancers)
@@ -116,9 +118,15 @@ public class InstructionDancer : MonoBehaviour
                 frame -= 0.016f;
             }
             frame = phraseTime;
+            dancerCount++;
+            //最後のAutoDancerに踊らせるとき待機時間を１ステップ分減らす
+            if(dancerCount==autoDancers.Count-1)
+            {
+                frame -= ((float)_onePhrase.phraseTime / ((float)_onePhrase.stepCount));
+            }
         }
         //ダンスを真似するクラスにフレーズを渡す
-        matchDancer.ResetPhrase(_onePhrase);
+        matchDancer.RefreshPhrase(_onePhrase);
         //AutoDancerの処理が終了
         endAutoDance = true;
         Debug.Log("DanceEnd");

@@ -24,7 +24,7 @@ public class MatchDancer : MonoBehaviour
     /// フレーズをセットしstepNumberを初期化
     /// </summary>
     /// <param name="_phrase">手本となるフレーズ</param>
-    public void ResetPhrase(Phrase _phrase)
+    public void RefreshPhrase(Phrase _phrase)
     {
         stepNumber = -1;
         modelPhrase = _phrase;
@@ -33,7 +33,7 @@ public class MatchDancer : MonoBehaviour
     /// <summary>
     /// 手本となるフレーズと照合
     /// </summary>
-    public int CheckModelDance()
+    public int VerifyModelDance()
     {
         //ボタンが押されたか。押されたときのみ照合したい
         bool pushed = false;
