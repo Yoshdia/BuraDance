@@ -26,6 +26,35 @@ public class InstructionDancer : MonoBehaviour
     /// </summary>
     List<AutoDancer> autoDancers = new List<AutoDancer>();
 
+    [SerializeField]
+    MatchDancer matchDancer=default;
+
+    bool endAutoDance;
+
+    private void Start()
+    {
+        //matchDancer = GetComponent<MatchDancer>();
+        endAutoDance = false;
+    }
+
+    private void Update()
+    {
+        if (endAutoDance)
+        {
+            int danceResult = matchDancer.CheckModelDance();
+            if (danceResult==1)
+            {
+                endAutoDance = false;
+                Debug.Log("Dance Clear!");
+            }
+            else if(danceResult==-1)
+            {
+                endAutoDance = false;
+                Debug.Log("Dance Missed...");
+            }
+        }
+    }
+
     /// <summary>
     /// ダンサーそれぞれに躍らせるフレーズを生成
     /// </summary>
@@ -53,6 +82,7 @@ public class InstructionDancer : MonoBehaviour
             return;
         }
 
+        endAutoDance = false;
         StopCoroutine("Dance");
         //踊らせる
         StartCoroutine("Dance", onePhrase);
@@ -81,6 +111,8 @@ public class InstructionDancer : MonoBehaviour
             }
             frame = phraseTime;
         }
+        matchDancer.ResetPhrase(_onePhrase);
+        endAutoDance = true;
         Debug.Log("DanceEnd");
     }
 }
