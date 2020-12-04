@@ -47,7 +47,7 @@ public class InstructionDancer : MonoBehaviour
         Phrase onePhrase = CreatePhrase();
 
         //踊らせる相手がゼロではないか
-        if (autoDancers.Count <= 0)
+        if (autoDancers.Count < 1)
         {
             Debug.Log("Error! no Auto Dancer!");
             return;

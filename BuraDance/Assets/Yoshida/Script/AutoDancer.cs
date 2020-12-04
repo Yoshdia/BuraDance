@@ -31,24 +31,16 @@ public class AutoDancer : MonoBehaviour
     public IEnumerator WaitForFrame(Phrase _phrase)
     {
         //ステップの間隔　全体時間/回数
-        float stepInterval = (float)_phrase.phraseTime / ((float)_phrase.stepCount/*-1*/);
+        float stepInterval = (float)_phrase.phraseTime / ((float)_phrase.stepCount);
 
         //ステップ情報を基にアニメーションさせる
         foreach (var step in _phrase.stepTable)
         {
-            //if (step == StepDirection.NoStep)
-            //{
-            //    break;
-            //}
-            //else
-            //{
-            //    stepInterval = (float)_phrase.phraseTime / (float)_phrase.stepCount;
-            //}
             //左
             if (step == StepDirection.LeftStep)
             {
                 animator.SetTrigger("Left");
-                Debug.Log("Left");
+                Debug.Log("Left",this.gameObject);
             }
             //右
             else if (step == StepDirection.RightStep)
@@ -64,7 +56,10 @@ public class AutoDancer : MonoBehaviour
                 yield return null;
                 stepInterval -= 0.016f;
             }
-            stepInterval = (float)_phrase.phraseTime / (float)_phrase.stepCount;
+            if (step != StepDirection.NoStep)
+            {
+                stepInterval = (float)_phrase.phraseTime / ((float)_phrase.stepCount );
+            }
         }
     }
 }

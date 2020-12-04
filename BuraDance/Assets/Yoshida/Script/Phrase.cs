@@ -68,8 +68,8 @@ public struct Phrase
                 stepTable.Add(StepDirection.RightStep);
             }
         }
-        //stepTable.Add(StepDirection.NoStep);
-        Debug.Log(stepTable.Count);
+        stepTable.Add(StepDirection.NoStep);
+        Debug.Log(stepTable.Count-1);
     }
 
 }
