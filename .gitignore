@@ -60,3 +60,5 @@ crashlytics-build.properties
 
 BuraDance/Library/
 BuraDance/Logs/
+BuraDance/obj/Debug/
+BuraDance/Temp/
