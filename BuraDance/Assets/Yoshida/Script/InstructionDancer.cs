@@ -30,12 +30,25 @@ public class InstructionDancer : MonoBehaviour
     /// <summary>
     /// ダンスを真似するクラス
     /// </summary>    
-    MatchDancer matchDancer=default;
+    MatchDancer matchDancer = default;
 
     /// <summary>
     /// AutoDancerの処理が終わったフラグ
     /// </summary>
-    bool endAutoDance=false;
+    bool endAutoDance = false;
+
+    /// <summary>
+    /// 1フレーズが終わったときに建つフラグ
+    /// プレイヤーの判定が終わった後のエフェクト再生や次のフレーズに移行する処理を書くために必要
+    /// </summary>
+    bool endPhrase = false;
+
+    [SerializeField]
+    /// <summary>
+    /// フレーズ間のインターバル
+    /// </summary>
+    public float PhraseInterval = 250.0f;
+    public float phraseInterval = 0.0f;
 
     private void Update()
     {
@@ -43,18 +56,34 @@ public class InstructionDancer : MonoBehaviour
         if (endAutoDance)
         {
             //MatchDancerに踊らせその入力を取得
-            int danceResult = matchDancer.VerifyModelDance();
+            int danceResult = matchDancer.MatchingWithModelDance();
             //全て成功
-            if (danceResult==1)
+            if (danceResult == 1)
             {
                 endAutoDance = false;
+                endPhrase = true;
+                phraseInterval = PhraseInterval;
                 Debug.Log("Dance Clear!");
             }
             //失敗
-            else if(danceResult==-1)
+            else if (danceResult == -1)
             {
                 endAutoDance = false;
+                endPhrase = true;
+                phraseInterval = PhraseInterval;
                 Debug.Log("Dance Missed...");
+            }
+        }
+        if (endPhrase)
+        {
+            if (phraseInterval >= 0)
+            {
+                phraseInterval--;
+            }
+            else
+            {
+                Instruction();
+                endPhrase = false;
             }
         }
     }
@@ -104,7 +133,7 @@ public class InstructionDancer : MonoBehaviour
         float phraseTime = (float)_onePhrase.phraseTime;
         float frame = phraseTime;
         //AutoDancerに指示した回数
-        int dancerCount=0;
+        int dancerCount = 0;
         //一人目からフレーズを渡し踊らせ、１フレーズ分の時間が経過すると次のダンサーに踊らせる
         //ダンサーの数繰り返す。
         foreach (var dancer in autoDancers)
@@ -120,7 +149,7 @@ public class InstructionDancer : MonoBehaviour
             frame = phraseTime;
             dancerCount++;
             //最後のAutoDancerに踊らせるとき待機時間を１ステップ分減らす
-            if(dancerCount==autoDancers.Count-1)
+            if (dancerCount == autoDancers.Count - 1)
             {
                 frame -= ((float)_onePhrase.phraseTime / ((float)_onePhrase.stepCount));
             }
@@ -131,4 +160,5 @@ public class InstructionDancer : MonoBehaviour
         endAutoDance = true;
         Debug.Log("DanceEnd");
     }
+
 }

@@ -33,7 +33,7 @@ public class MatchDancer : MonoBehaviour
     /// <summary>
     /// 手本となるフレーズと照合
     /// </summary>
-    public int VerifyModelDance()
+    public int MatchingWithModelDance()
     {
         //ボタンが押されたか。押されたときのみ照合したい
         bool pushed = false;
