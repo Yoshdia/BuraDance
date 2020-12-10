@@ -16,10 +16,10 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
-  - 
-  - 
+  - Dancer
+  - Stage
+  - BackStage1
+  - BackStage2
   - 
   - 
   - 
@@ -40,4 +40,16 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Stage
+    uniqueID: 609266469
+    locked: 0
+  - name: BackStatge1
+    uniqueID: 707809855
+    locked: 0
+  - name: BackStage2
+    uniqueID: 379507635
+    locked: 0
+  - name: Dancers
+    uniqueID: 1488865993
     locked: 0
