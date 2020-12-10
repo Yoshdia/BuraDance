@@ -38,21 +38,41 @@ public class InstructionDancer : MonoBehaviour
     bool endAutoDance = false;
 
     /// <summary>
+    /// フレーズを終わらせるときに建つフラグ
+    /// プレイヤーの判定が終わり成否結果を出すまでの間使われるフラグ
+    /// </summary>
+    bool closingPhrase = false;
+
+    [SerializeField]
+    /// <summary>
+    /// プレイヤーの判定が終わり成否結果を出すまでの間隔 
+    /// これが無いとプレイヤーの最後のダンスが再生されない
+    /// </summary>
+    float ClosingPhraseInterval = 80.0f;
+    float closingPhraseInterval = 0.0f;
+
+    /// <summary>
     /// 1フレーズが終わったときに建つフラグ
     /// プレイヤーの判定が終わった後のエフェクト再生や次のフレーズに移行する処理を書くために必要
     /// </summary>
-    bool endPhrase = false;
+    bool restartingPhrase = false;
 
     [SerializeField]
     /// <summary>
     /// フレーズ間のインターバル
     /// </summary>
     public float PhraseInterval = 250.0f;
-    public float phraseInterval = 0.0f;
+    float phraseInterval = 0.0f;
+
+    private void Start()
+    {
+        phraseInterval = PhraseInterval;
+        closingPhraseInterval = ClosingPhraseInterval;
+    }
 
     private void Update()
     {
-        //AutoDancerの処理が終了しMatchDancerとのダンスを照合する
+        //AutoDancer達の処理が終了しMatchDancerとのダンスを照合する
         if (endAutoDance)
         {
             //MatchDancerに踊らせその入力を取得
@@ -60,32 +80,51 @@ public class InstructionDancer : MonoBehaviour
             //全て成功
             if (danceResult == 1)
             {
-                endAutoDance = false;
-                endPhrase = true;
-                phraseInterval = PhraseInterval;
-                Debug.Log("Dance Clear!");
+                SuccessDance();
             }
             //失敗
             else if (danceResult == -1)
             {
-                endAutoDance = false;
-                endPhrase = true;
-                phraseInterval = PhraseInterval;
-                Debug.Log("Dance Missed...");
+                FailDance();
             }
         }
-        if (endPhrase)
-        {
-            if (phraseInterval >= 0)
+
+        //このフレーズを終わらせる
+        if (closingPhrase)
             {
-                phraseInterval--;
+                if (closingPhraseInterval >= 0)
+                {
+                    closingPhraseInterval--;
+                }
+                else
+                {
+                    closingPhraseInterval = ClosingPhraseInterval;
+                    closingPhrase = false;
+
+                    foreach (var dancer in autoDancers)
+                    {
+                        dancer.HappyDance();
+                    }
+                    matchDancer.HappyDance();
+                    //フレーズ間を移行
+                    restartingPhrase = true;
+                }
             }
-            else
+            else if (restartingPhrase)
             {
-                Instruction();
-                endPhrase = false;
-            }
-        }
+                if (phraseInterval >= 0)
+                {
+                    phraseInterval--;
+                }
+                else
+                {
+                    Instruction();
+
+                    phraseInterval = PhraseInterval;
+                    restartingPhrase = false;
+                }
+            }       
+
     }
 
     /// <summary>
@@ -161,4 +200,25 @@ public class InstructionDancer : MonoBehaviour
         Debug.Log("DanceEnd");
     }
 
+    /// <summary>
+    /// 手本通りのダンスに成功した処理
+    /// </summary>
+    private void SuccessDance()
+    {
+        Debug.Log("Dance Clear!");
+        closingPhrase = true;
+        endAutoDance = false;
+
+    }
+
+    /// <summary>
+    /// 手本通りのダンスに失敗
+    /// </summary>
+    private void FailDance()
+    {
+        Debug.Log("Dance Missed...");
+        closingPhrase = true;
+        endAutoDance = false;
+
+    }
 }

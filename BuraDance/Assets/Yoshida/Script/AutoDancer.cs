@@ -39,13 +39,13 @@ public class AutoDancer : MonoBehaviour
             //左
             if (step == StepDirection.LeftStep)
             {
-                animator.SetTrigger("Left");
+                animator.SetTrigger("LeftDance");
                 Debug.Log("Left",this.gameObject);
             }
             //右
             else if (step == StepDirection.RightStep)
             {
-                animator.SetTrigger("Right");
+                animator.SetTrigger("RightDance");
                 Debug.Log("Right");
             }
             //ステップの間隔を待つ
@@ -62,5 +62,14 @@ public class AutoDancer : MonoBehaviour
             }
         }
     }
+
+    /// <summary>
+    /// ダンスに成功し喜ぶアニメーションを再生
+    /// </summary>
+    public void HappyDance()
+    {
+        animator.SetTrigger("Happy");
+    }
+
 }
 

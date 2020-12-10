@@ -44,7 +44,7 @@ public class MatchDancer : MonoBehaviour
         {
             //左
             myStep = StepDirection.LeftStep;
-            animator.SetTrigger("Left");
+            animator.SetTrigger("LeftDance");
             pushed = true;
 
             stepNumber++;
@@ -53,7 +53,7 @@ public class MatchDancer : MonoBehaviour
         {
             //右
             myStep = StepDirection.RightStep;
-            animator.SetTrigger("Right");
+            animator.SetTrigger("RightDance");
             pushed = true;
 
             stepNumber++;
@@ -83,5 +83,13 @@ public class MatchDancer : MonoBehaviour
             }
         }
         return 0;
+    }
+
+    /// <summary>
+    /// ダンスに成功し喜ぶアニメーションを再生
+    /// </summary>
+    public void HappyDance()
+    {
+        animator.SetTrigger("Happy");
     }
 }
