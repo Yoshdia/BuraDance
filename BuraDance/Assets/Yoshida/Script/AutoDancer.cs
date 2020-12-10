@@ -9,7 +9,7 @@ public class AutoDancer : MonoBehaviour
     /// </summary>
     private Animator animator;
 
-    private void Start()
+    private void Awake()
     {
         animator = GetComponent<Animator>();
     }
@@ -61,6 +61,14 @@ public class AutoDancer : MonoBehaviour
                 stepInterval = (float)_phrase.phraseTime / ((float)_phrase.stepCount );
             }
         }
+    }
+
+    /// <summary>
+    /// 待機ダンスを始めさせる
+    /// </summary>
+    public void StartIdleDance()
+    {
+        animator.SetBool("StartDance",true);
     }
 
     /// <summary>

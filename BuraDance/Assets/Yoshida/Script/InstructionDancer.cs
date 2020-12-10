@@ -68,6 +68,12 @@ public class InstructionDancer : MonoBehaviour
     {
         phraseInterval = PhraseInterval;
         closingPhraseInterval = ClosingPhraseInterval;
+
+        foreach (var dancer in autoDancers)
+        {
+            dancer.StartIdleDance();
+        }
+        matchDancer.StartIdleDance();
     }
 
     private void Update()

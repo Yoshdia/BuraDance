@@ -15,7 +15,7 @@ public class MatchDancer : MonoBehaviour
     /// </summary>
     int stepNumber = -1;
 
-    void Start()
+    void Awake()
     {
         animator = GetComponent<Animator>();
     }
@@ -83,6 +83,15 @@ public class MatchDancer : MonoBehaviour
             }
         }
         return 0;
+    }
+
+
+    /// <summary>
+    /// 待機ダンスを始めさせる
+    /// </summary>
+    public void StartIdleDance()
+    {
+        animator.SetBool("StartDance",true);
     }
 
     /// <summary>
