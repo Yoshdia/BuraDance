@@ -69,20 +69,23 @@ public class InstructionDancer : MonoBehaviour
     /// </summary>
     int danceResult=0;
 
+    bool startedDance = false;
+
     private void Start()
     {
         phraseInterval = PhraseInterval;
         closingPhraseInterval = ClosingPhraseInterval;
+        restartingPhrase = true;
 
-        foreach (var dancer in autoDancers)
-        {
-            dancer.StartIdleDance();
-        }
-        matchDancer.StartIdleDance();
+        startedDance = false;
     }
 
     private void Update()
     {
+        if(!startedDance)
+        {
+            return;
+        }
         //AutoDancer達の処理が終了しMatchDancerとのダンスを照合する
         if (endAutoDance)
         {
@@ -146,6 +149,16 @@ public class InstructionDancer : MonoBehaviour
                 }
             }       
 
+    }
+
+    public void StartDance()
+    {
+        startedDance = true;
+        foreach (var dancer in autoDancers)
+        {
+            dancer.StartIdleDance();
+        }
+        matchDancer.StartIdleDance();
     }
 
     /// <summary>
