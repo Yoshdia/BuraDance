@@ -64,20 +64,31 @@ public class AutoDancer : MonoBehaviour
     }
 
     /// <summary>
+    /// ダンスの結果によってトリガーをセットする
+    /// </summary>
+    /// <param name="_result">結果[1=成功,-1=失敗]</param>
+    public void ResultDancing(int _result)
+    {
+        if (_result == 1)
+        {
+            animator.SetTrigger("Happy");
+            StopCoroutine("AutoDance");
+        }
+        else if (_result == -1)
+        {
+            animator.SetTrigger("Missed");
+            StopCoroutine("AutoDance");
+        }
+    }
+
+    /// <summary>
     /// 待機ダンスを始めさせる
     /// </summary>
     public void StartIdleDance()
     {
-        animator.SetBool("StartDance",true);
+        animator.SetBool("StartDance", true);
     }
 
-    /// <summary>
-    /// ダンスに成功し喜ぶアニメーションを再生
-    /// </summary>
-    public void HappyDance()
-    {
-        animator.SetTrigger("Happy");
-    }
 
 }
 

@@ -38,26 +38,7 @@ public class MatchDancer : MonoBehaviour
         //ボタンが押されたか。押されたときのみ照合したい
         bool pushed = false;
         //ボタンが押されたときのステップ
-        StepDirection myStep = StepDirection.NoStep;
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            //左
-            myStep = StepDirection.LeftStep;
-            animator.SetTrigger("LeftDance");
-            pushed = true;
-
-            stepNumber++;
-        }
-        else if (Input.GetMouseButtonDown(1))
-        {
-            //右
-            myStep = StepDirection.RightStep;
-            animator.SetTrigger("RightDance");
-            pushed = true;
-
-            stepNumber++;
-        }
+        StepDirection myStep = InputDance(ref pushed);
 
         //照合の必要が無い範囲を除外
         if (stepNumber >= modelPhrase.stepTable.Count ||
@@ -85,20 +66,51 @@ public class MatchDancer : MonoBehaviour
         return 0;
     }
 
+    public StepDirection InputDance(ref bool _pushed)
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            //左
+            animator.SetTrigger("LeftDance");
+            _pushed = true;
+
+            stepNumber++;
+            return StepDirection.LeftStep;
+        }
+        else if (Input.GetMouseButtonDown(1))
+        {
+            //右
+            animator.SetTrigger("RightDance");
+            _pushed = true;
+
+            stepNumber++;
+            return StepDirection.RightStep;
+        }
+        return StepDirection.NoStep;
+    }
+
+    /// <summary>
+    /// ダンスの結果によってトリガーをセットする
+    /// </summary>
+    /// <param name="_result">結果[1=成功,-1=失敗]</param>
+    public void ResultDancing(int _result)
+    {
+        if (_result == 1)
+        {
+            animator.SetTrigger("Happy");
+        }
+        else if (_result == -1)
+        {
+            animator.SetTrigger("Missed");
+        }
+    }
 
     /// <summary>
     /// 待機ダンスを始めさせる
     /// </summary>
     public void StartIdleDance()
     {
-        animator.SetBool("StartDance",true);
+        animator.SetBool("StartDance", true);
     }
 
-    /// <summary>
-    /// ダンスに成功し喜ぶアニメーションを再生
-    /// </summary>
-    public void HappyDance()
-    {
-        animator.SetTrigger("Happy");
-    }
 }

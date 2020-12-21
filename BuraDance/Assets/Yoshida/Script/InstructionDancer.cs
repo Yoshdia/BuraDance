@@ -64,6 +64,11 @@ public class InstructionDancer : MonoBehaviour
     public float PhraseInterval = 250.0f;
     float phraseInterval = 0.0f;
 
+    /// <summary>
+    /// ダンスの結果を所持
+    /// </summary>
+    int danceResult=0;
+
     private void Start()
     {
         phraseInterval = PhraseInterval;
@@ -82,7 +87,7 @@ public class InstructionDancer : MonoBehaviour
         if (endAutoDance)
         {
             //MatchDancerに踊らせその入力を取得
-            int danceResult = matchDancer.MatchingWithModelDance();
+            danceResult = matchDancer.MatchingWithModelDance();
             //全て成功
             if (danceResult == 1)
             {
@@ -91,6 +96,16 @@ public class InstructionDancer : MonoBehaviour
             //失敗
             else if (danceResult == -1)
             {
+                FailDance();
+            }
+        }
+        else
+        {
+            bool noFlag=false;
+            matchDancer.InputDance(ref noFlag);
+            if (noFlag)
+            {
+                danceResult = -1;
                 FailDance();
             }
         }
@@ -109,9 +124,9 @@ public class InstructionDancer : MonoBehaviour
 
                     foreach (var dancer in autoDancers)
                     {
-                        dancer.HappyDance();
+                        dancer.ResultDancing(danceResult);
                     }
-                    matchDancer.HappyDance();
+                    matchDancer.ResultDancing(danceResult);
                     //フレーズ間を移行
                     restartingPhrase = true;
                 }
@@ -214,6 +229,7 @@ public class InstructionDancer : MonoBehaviour
         Debug.Log("Dance Clear!");
         closingPhrase = true;
         endAutoDance = false;
+        StopCoroutine("UseDancers");
 
     }
 
@@ -225,6 +241,7 @@ public class InstructionDancer : MonoBehaviour
         Debug.Log("Dance Missed...");
         closingPhrase = true;
         endAutoDance = false;
+        StopCoroutine("UseDancers");
 
     }
 }
