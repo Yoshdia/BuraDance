@@ -386,13 +386,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stepCountMax: 3
-  phraseTimeMax: 2
+  phraseTimeMax: 1.2
   autoDancers:
   - {fileID: 1617859036}
   - {fileID: 21951108}
   matchDancer: {fileID: 1630608580}
-  ClosingPhraseInterval: 70
-  PhraseInterval: 250
+  ClosingPhraseInterval: 30
+  PhraseInterval: 100
 --- !u!4 &467744241
 Transform:
   m_ObjectHideFlags: 0

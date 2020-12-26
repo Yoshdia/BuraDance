@@ -48,7 +48,7 @@ public class InstructionDancer : MonoBehaviour
     /// プレイヤーの判定が終わり成否結果を出すまでの間隔 
     /// これが無いとプレイヤーの最後のダンスが再生されない
     /// </summary>
-    float ClosingPhraseInterval = 80.0f;
+    float ClosingPhraseInterval = 40.0f;
     float closingPhraseInterval = 0.0f;
 
     /// <summary>
@@ -61,7 +61,7 @@ public class InstructionDancer : MonoBehaviour
     /// <summary>
     /// フレーズ間のインターバル
     /// </summary>
-    public float PhraseInterval = 250.0f;
+    public float PhraseInterval = 100.0f;
     float phraseInterval = 0.0f;
 
     /// <summary>
@@ -78,6 +78,8 @@ public class InstructionDancer : MonoBehaviour
         restartingPhrase = true;
 
         startedDance = false;
+
+        Application.targetFrameRate = 20;
     }
 
     private void Update()
