@@ -71,6 +71,8 @@ public class InstructionDancer : MonoBehaviour
 
     bool startedDance = false;
 
+    ScoreDisplayer scoreDisplayer;
+
     private void Start()
     {
         phraseInterval = PhraseInterval;
@@ -80,6 +82,8 @@ public class InstructionDancer : MonoBehaviour
         startedDance = false;
 
         Application.targetFrameRate = 20;
+
+        scoreDisplayer=GetComponent<ScoreDisplayer>();
     }
 
     private void Update()
@@ -245,7 +249,7 @@ public class InstructionDancer : MonoBehaviour
         closingPhrase = true;
         endAutoDance = false;
         StopCoroutine("UseDancers");
-
+        scoreDisplayer.PlusScore(260);
     }
 
     /// <summary>
