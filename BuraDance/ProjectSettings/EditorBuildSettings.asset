@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Yutaro/Scenes/Tutorial/TutorialScene.unity
     guid: 4129acc0f34d7b342b666090d1b3c2a5
+  - enabled: 1
+    path: Assets/Yutaro/Scenes/Result/ResultScene.unity
+    guid: 99b1a2bdb8b574e4fb7914d3c6f843dc
   m_configObjects: {}

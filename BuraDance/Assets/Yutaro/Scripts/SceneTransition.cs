@@ -60,5 +60,10 @@ public class SceneTransition : MonoBehaviour
             SceneManager.LoadScene("ResultScene");
         }
 
+        if (scene.name == "ResultScene")
+        {
+            SceneManager.LoadScene("TitleScene");
+        }
+
     }
 }
