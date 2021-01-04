@@ -22,6 +22,7 @@ public class ScoreDisplayer : MonoBehaviour
     /// </summary>
     Vector3 defaultScale;
 
+
     /// <summary>
     /// displayersを拡大する最大速度
     /// </summary>

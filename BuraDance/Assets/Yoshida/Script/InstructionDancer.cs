@@ -17,7 +17,7 @@ public class InstructionDancer : MonoBehaviour
     /// <summary>
     /// フレーズの最短時間
     /// </summary>
-    private float phraseTimeMax = 8.0f;
+    private float phraseTimeMax = 0.4f;
 
     [SerializeField]
     /// <summary>
@@ -48,7 +48,7 @@ public class InstructionDancer : MonoBehaviour
     /// プレイヤーの判定が終わり成否結果を出すまでの間隔 
     /// これが無いとプレイヤーの最後のダンスが再生されない
     /// </summary>
-    float ClosingPhraseInterval = 40.0f;
+    float ClosingPhraseInterval = 15;
     float closingPhraseInterval = 0.0f;
 
     /// <summary>
@@ -61,7 +61,7 @@ public class InstructionDancer : MonoBehaviour
     /// <summary>
     /// フレーズ間のインターバル
     /// </summary>
-    public float PhraseInterval = 100.0f;
+    public float PhraseInterval = 30.0f;
     float phraseInterval = 0.0f;
 
     /// <summary>
@@ -69,9 +69,22 @@ public class InstructionDancer : MonoBehaviour
     /// </summary>
     int danceResult=0;
 
+    /// <summary>
+    /// ゲーム本編が開始したかどうか
+    /// 開幕の演出を管理するときに使う
+    /// </summary>
     bool startedDance = false;
 
+    /// <summary>
+    /// スコアを表示させるためのクラス
+    /// </summary>
     ScoreDisplayer scoreDisplayer;
+
+    [SerializeField]
+    /// <summary>
+    /// ダンスが成功したときの加算スコア
+    /// </summary>
+    int successPlusScore=40;
 
     private void Start()
     {
@@ -249,7 +262,7 @@ public class InstructionDancer : MonoBehaviour
         closingPhrase = true;
         endAutoDance = false;
         StopCoroutine("UseDancers");
-        scoreDisplayer.PlusScore(260);
+        scoreDisplayer.PlusScore(successPlusScore);
     }
 
     /// <summary>
