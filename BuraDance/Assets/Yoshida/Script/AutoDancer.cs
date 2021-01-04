@@ -82,6 +82,15 @@ public class AutoDancer : MonoBehaviour
     }
 
     /// <summary>
+    /// ダンスの処理を中断させる
+    /// コルーチンを中断させるだけでアニメーションを切り替えさせるわけではない
+    /// </summary>
+    public void InterruptStopDance()
+    {
+        StopCoroutine("AutoDance");
+    }
+
+    /// <summary>
     /// 待機ダンスを始めさせる
     /// </summary>
     public void StartIdleDance()

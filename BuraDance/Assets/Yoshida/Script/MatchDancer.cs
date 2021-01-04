@@ -105,6 +105,7 @@ public class MatchDancer : MonoBehaviour
         }
     }
 
+
     /// <summary>
     /// 待機ダンスを始めさせる
     /// </summary>

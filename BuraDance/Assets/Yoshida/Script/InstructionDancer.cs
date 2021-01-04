@@ -261,6 +261,9 @@ public class InstructionDancer : MonoBehaviour
         closingPhrase = true;
         endAutoDance = false;
         StopCoroutine("UseDancers");
-
+        foreach(var dancer in autoDancers)
+        {
+            dancer.InterruptStopDance();
+        }
     }
 }
