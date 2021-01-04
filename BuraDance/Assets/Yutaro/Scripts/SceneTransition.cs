@@ -9,6 +9,17 @@ using UnityEngine.SceneManagement;
 
 public class SceneTransition : MonoBehaviour
 {
+
+    private bool nextScene = false;     // 次のシーンへ遷移するか
+    /// <summary>
+    /// 次のシーンへの遷移フラグをオン
+    /// </summary>
+    public void SetNextScene()
+    {
+        nextScene = true;
+    }
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -18,7 +29,12 @@ public class SceneTransition : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        // シーン遷移のフラグが立っている
+        // 左クリック・画面タッチで次のシーンへ遷移
+        if(nextScene && Input.GetMouseButton(0))
+        {
+            ChangeScene();
+        }
     }
 
     /// <summary>
@@ -42,6 +58,11 @@ public class SceneTransition : MonoBehaviour
         if(scene.name == "GameScene")
         {
             SceneManager.LoadScene("ResultScene");
+        }
+
+        if (scene.name == "ResultScene")
+        {
+            SceneManager.LoadScene("TitleScene");
         }
 
     }
