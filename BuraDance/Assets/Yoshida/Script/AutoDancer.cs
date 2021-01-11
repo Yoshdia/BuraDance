@@ -31,7 +31,7 @@ public class AutoDancer : MonoBehaviour
     public IEnumerator AutoDance(Phrase _phrase)
     {
         //ステップの間隔　全体時間/回数
-        float stepInterval = (float)_phrase.phraseTime / ((float)_phrase.stepCount);
+        float stepInterval = (float)_phrase.phraseTime /*/ ((float)_phrase.stepCount)*/;
 
         //ステップ情報を基にアニメーションさせる
         foreach (var step in _phrase.stepTable)

@@ -23,7 +23,7 @@ public class InstructionDancer : MonoBehaviour
     /// フレーズの最短時間
     /// </summary>
     [SerializeField]
-    private float phraseTimeMax = 0.4f;
+    float intervalStep = 0.4f;
 
     /// <summary>
     /// Phraseの情報に合わせお手本として踊るダンサー達
@@ -151,11 +151,13 @@ public class InstructionDancer : MonoBehaviour
             //失敗
             else if (danceResult == -1)
             {
+                Debug.Log("normalMiss");
                 FailDance();
             }
             //時間切れ　失敗
             else if(intervalInputLimit)
             {
+                Debug.Log("timeOverMiss");
                 danceResult = -1;
                 FailDance();
             }
@@ -169,6 +171,7 @@ public class InstructionDancer : MonoBehaviour
                 matchDancer.InputDance(ref noFlag);
                 if (noFlag)
                 {
+                    Debug.Log("soFastMiss");
                     danceResult = -1;
                     FailDance();
                 }
@@ -184,7 +187,7 @@ public class InstructionDancer : MonoBehaviour
     {
         //定められた定数の範囲の乱数でこのフレーズのステップ数とステップ時間を決定
         int stepCount = Random.Range(1, stepCountMax + 1);
-        return new Phrase(stepCount, phraseTimeMax);
+        return new Phrase(stepCount, intervalStep);
     }
 
     /// <summary>
@@ -218,7 +221,7 @@ public class InstructionDancer : MonoBehaviour
     IEnumerator UseDancers(Phrase _onePhrase)
     {
         //frameに代入するための一時的な定数
-        float phraseTime = (float)_onePhrase.phraseTime;
+        float phraseTime = (float)_onePhrase.phraseTime*(float)_onePhrase.stepCount;
         //増減する待機用の変数
         float frame = phraseTime;
 
@@ -238,10 +241,10 @@ public class InstructionDancer : MonoBehaviour
             }
             frame = phraseTime;
             dancerCount++;
-            //最後のAutoDancerに踊らせるとき待機時間を１ステップ分減らす(お手本の最後のダンスが終わった直後に入力を許可するため
+            //最後のAutoDancerに踊らせるとき待機時間を１ステップ分減らす
             if (dancerCount == autoDancers.Count - 1)
             {
-                frame -= ((float)_onePhrase.phraseTime / ((float)_onePhrase.stepCount));
+                frame -= ((float)_onePhrase.phraseTime );
             }
         }
         //ダンスを真似するクラスにフレーズを渡す
