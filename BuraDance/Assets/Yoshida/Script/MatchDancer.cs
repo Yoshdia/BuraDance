@@ -122,4 +122,9 @@ public class MatchDancer : MonoBehaviour
     {
         animator.SetTrigger("Restart");
     }
+
+    public void GameOverDance()
+    {
+        animator.SetTrigger("OverDance");
+    }
 }

@@ -30,8 +30,8 @@ public class AutoDancer : MonoBehaviour
     /// <returns></returns>
     public IEnumerator AutoDance(Phrase _phrase)
     {
-        //ステップの間隔　全体時間/回数
-        float stepInterval = (float)_phrase.phraseTime /*/ ((float)_phrase.stepCount)*/;
+        //ステップの間隔
+        float stepInterval = (float)_phrase.phraseTime ;
 
         //ステップ情報を基にアニメーションさせる
         foreach (var step in _phrase.stepTable)
@@ -58,7 +58,7 @@ public class AutoDancer : MonoBehaviour
             }
             if (step != StepDirection.NoStep)
             {
-                stepInterval = (float)_phrase.phraseTime /*/ ((float)_phrase.stepCount )*/;
+                stepInterval = (float)_phrase.phraseTime;
             }
         }
     }
@@ -106,5 +106,9 @@ public class AutoDancer : MonoBehaviour
         animator.SetTrigger("Restart");
     }
 
+    public void GameOverDance()
+    {
+        animator.SetTrigger("OverDance");
+    }
 }
 

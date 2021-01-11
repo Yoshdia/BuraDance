@@ -597,12 +597,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stepCountMax: 3
-  phraseTimeMax: 0.1
+  intervalStep: 0.15
   autoDancers:
   - {fileID: 1617859036}
   - {fileID: 21951108}
   matchDancer: {fileID: 1630608580}
   successPlusScore: 40
+  hitPoint: 0
+  HitPointMax: 3
 --- !u!4 &467744241
 Transform:
   m_ObjectHideFlags: 0

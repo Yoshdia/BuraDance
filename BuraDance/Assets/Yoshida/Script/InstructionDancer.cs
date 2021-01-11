@@ -14,6 +14,11 @@ public class InstructionDancer : MonoBehaviour
     bool startedDance = false;
 
     /// <summary>
+    /// ゲームが終了したかどうか
+    /// </summary>
+    bool endDance = false;
+
+    /// <summary>
     /// ステップの最大数、増加する
     /// </summary>
     [SerializeField]
@@ -53,8 +58,8 @@ public class InstructionDancer : MonoBehaviour
     /// 0になると失敗になる
     /// </summary>
     [SerializeField]
-    const float IntervalInputLimit = 0.4f;
-    
+    float IntervalInputLimit = 0.4f;
+
     /// <summary>
     /// フレーズを終わらせるときに建つフラグ
     /// プレイヤーの判定が終わり成否結果を出すまでの間使われるフラグだった
@@ -66,7 +71,7 @@ public class InstructionDancer : MonoBehaviour
     /// これが無いとプレイヤーの最後のダンスが再生されない
     /// </summary>
     [SerializeField]
-    const float IntervalLastDance = 0.15f;
+    float IntervalLastDance = 0.15f;
 
     /// <summary>
     /// 結果を表示しているときに建つフラグ
@@ -76,7 +81,7 @@ public class InstructionDancer : MonoBehaviour
     /// 結果を表示している時間
     /// </summary>
     [SerializeField]
-    const float IntervalResultDance = 0.20f;
+    float IntervalResultDance = 0.20f;
 
     /// <summary>
     /// 1フレーズが終わったときに建つフラグ
@@ -88,7 +93,7 @@ public class InstructionDancer : MonoBehaviour
     /// フレーズ間のインターバル
     /// </summary>
     [SerializeField]
-    const float IntervalRestartDance = 0.3f;
+    float IntervalRestartDance = 0.3f;
 
     /// <summary>
     /// ダンスの結果を所持
@@ -105,6 +110,25 @@ public class InstructionDancer : MonoBehaviour
     /// </summary>
     [SerializeField]
     int successPlusScore = 40;
+
+    /// <summary>
+    /// ゲームオーバー後ダンサーたちが転倒のアニメーションを再生する間隔
+    /// </summary>
+    [SerializeField]
+    float IntervalGameOverFall = 0.15f;
+
+    /// <summary>
+    /// 残りの失敗していい数　残機
+    /// </summary>
+    [SerializeField]
+    int hitPoint = 0;
+
+    /// <summary>
+    /// 残り残機の最大数 
+    /// hitPointの初期化用
+    /// </summary>
+    [SerializeField]
+    int HitPointMax = 3;
 
     /// <summary>
     /// ダンス・ゲーム本編の開始
@@ -124,6 +148,7 @@ public class InstructionDancer : MonoBehaviour
 
     private void Start()
     {
+        hitPoint = HitPointMax;
         startedDance = false;
         //フレームレート固定
         Application.targetFrameRate = 20;
@@ -132,8 +157,8 @@ public class InstructionDancer : MonoBehaviour
 
     private void Update()
     {
-        //すべての処理が始まっているか。外部からStartDanceを呼ばれるとこのフラグが建つ
-        if (!startedDance)
+        //すべての処理が始まっているか。終わっていないか。外部からStartDanceを呼ばれるとこのフラグが建つ
+        if (!startedDance && !endDance)
         {
             return;
         }
@@ -155,7 +180,7 @@ public class InstructionDancer : MonoBehaviour
                 FailDance();
             }
             //時間切れ　失敗
-            else if(intervalInputLimit)
+            else if (intervalInputLimit)
             {
                 Debug.Log("timeOverMiss");
                 danceResult = -1;
@@ -221,7 +246,7 @@ public class InstructionDancer : MonoBehaviour
     IEnumerator UseDancers(Phrase _onePhrase)
     {
         //frameに代入するための一時的な定数
-        float phraseTime = (float)_onePhrase.phraseTime*(float)_onePhrase.stepCount;
+        float phraseTime = (float)_onePhrase.phraseTime * (float)_onePhrase.stepCount;
         //増減する待機用の変数
         float frame = phraseTime;
 
@@ -244,7 +269,7 @@ public class InstructionDancer : MonoBehaviour
             //最後のAutoDancerに踊らせるとき待機時間を１ステップ分減らす
             if (dancerCount == autoDancers.Count - 1)
             {
-                frame -= ((float)_onePhrase.phraseTime );
+                frame -= ((float)_onePhrase.phraseTime);
             }
         }
         //ダンスを真似するクラスにフレーズを渡す
@@ -364,11 +389,22 @@ public class InstructionDancer : MonoBehaviour
     /// </summary>
     void FailDance()
     {
-        CommonEndDance();
-        Debug.Log("Dance Missed...");
-        foreach (var dancer in autoDancers)
+        //残機を減らす
+        hitPoint--;
+        //ゲームオーバーか
+        if (hitPoint > 0)
         {
-            dancer.InterruptStopDance();
+            CommonEndDance();
+            Debug.Log("Dance Missed...");
+            foreach (var dancer in autoDancers)
+            {
+                dancer.InterruptStopDance();
+            }
+        }
+        else
+        {
+            endDance = true;
+            StartCoroutine("GameOverDance");
         }
     }
 
@@ -383,5 +419,32 @@ public class InstructionDancer : MonoBehaviour
         StartCoroutine("IntervalLastDancing", IntervalLastDance);
         StopCoroutine("IntervalInputLimiter");
         //intervalInputLimit = false;
+    }
+
+    /// <summary>
+    /// ゲームオーバーの演出
+    /// プレイヤー側から順に倒れていくようにアニメーションを再生
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator GameOverDance()
+    {
+        float frame = IntervalGameOverFall;
+
+        //倒れはじめ
+        matchDancer.GameOverDance();
+        //プレイヤー側から倒れる必要があるためリストの要素を反転
+        autoDancers.Reverse();
+
+        //IntervalGameOverFall待機して倒れていく
+        foreach (var dancer in autoDancers)
+        {
+            while (frame > 0)
+            {
+                yield return null;
+                frame -= 0.01f;
+            }
+            dancer.GameOverDance();
+            frame = IntervalGameOverFall;
+        }
     }
 }
