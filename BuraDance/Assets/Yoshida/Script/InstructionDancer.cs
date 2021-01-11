@@ -45,7 +45,7 @@ public class InstructionDancer : MonoBehaviour
 
     /// <summary>
     /// フレーズを終わらせるときに建つフラグ
-    /// プレイヤーの判定が終わり成否結果を出すまでの間使われるフラグ
+    /// プレイヤーの判定が終わり成否結果を出すまでの間使われるフラグだった
     /// </summary>
     bool intervalLastDancing = false;
 
@@ -56,7 +56,13 @@ public class InstructionDancer : MonoBehaviour
     [SerializeField]
     float IntervalLastDance = 0.15f;
 
+    /// <summary>
+    /// 結果を表示しているときに建つフラグ
+    /// </summary>
     bool intervalResultDancing = false;
+    /// <summary>
+    /// 結果を表示している時間
+    /// </summary>
     [SerializeField]
     float IntervalResultDance = 0.20f;
 
@@ -66,10 +72,10 @@ public class InstructionDancer : MonoBehaviour
     /// </summary>
     bool intervalRestartDancing = false;
 
-    [SerializeField]
     /// <summary>
     /// フレーズ間のインターバル
     /// </summary>
+    [SerializeField]
     public float IntervalRestartDance = 0.3f;
 
     /// <summary>
@@ -82,10 +88,10 @@ public class InstructionDancer : MonoBehaviour
     /// </summary>
     ScoreDisplayer scoreDisplayer;
 
-    [SerializeField]
     /// <summary>
     /// ダンスが成功したときの加算スコア
     /// </summary>
+    [SerializeField]
     int successPlusScore = 40;
 
     /// <summary>
@@ -138,17 +144,20 @@ public class InstructionDancer : MonoBehaviour
         }
         else
         {
-            //お手本が終了していないときに入力すると失敗になる
-            bool noFlag = false;
-            matchDancer.InputDance(ref noFlag);
-            if (noFlag)
+            if (!intervalLastDancing && !intervalResultDancing)
             {
-                danceResult = -1;
-                FailDance();
+                //お手本が終了していないときに入力すると失敗になる
+                bool noFlag = false;
+                matchDancer.InputDance(ref noFlag);
+                if (noFlag)
+                {
+                    danceResult = -1;
+                    FailDance();
+                }
             }
         }
     }
-    
+
     /// <summary>
     /// ダンサーそれぞれに躍らせるフレーズを生成
     /// </summary>
@@ -252,17 +261,23 @@ public class InstructionDancer : MonoBehaviour
         StartCoroutine("IntervalResultDancing", IntervalResultDance);
     }
 
+    /// <summary>
+    /// 結果を表示する時間
+    /// これにより結果表示後に産まれていたアニメーションの再生速度などによるズレがなくなる
+    /// </summary>
+    /// <param name="_interval"></param>
+    /// <returns></returns>
     IEnumerator IntervalResultDancing(float _interval)
     {
         //増減する待機用変数
         float interval = _interval;
-        intervalRestartDancing = true;
+        intervalResultDancing = true;
         while (interval > 0)
         {
             yield return null;
             interval -= 0.01f;
         }
-        intervalRestartDancing = false;
+        intervalResultDancing = false;
 
         foreach (var dancer in autoDancers)
         {
