@@ -58,7 +58,7 @@ public class AutoDancer : MonoBehaviour
             }
             if (step != StepDirection.NoStep)
             {
-                stepInterval = (float)_phrase.phraseTime / ((float)_phrase.stepCount );
+                stepInterval = (float)_phrase.phraseTime /*/ ((float)_phrase.stepCount )*/;
             }
         }
     }
