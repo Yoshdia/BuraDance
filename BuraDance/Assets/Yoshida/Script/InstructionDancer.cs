@@ -115,7 +115,7 @@ public class InstructionDancer : MonoBehaviour
     /// ゲームオーバー後ダンサーたちが転倒のアニメーションを再生する間隔
     /// </summary>
     [SerializeField]
-    float IntervalGameOverFall = 0.15f;
+    float IntervalGameOverFall = 0.12f;
 
     /// <summary>
     /// 残りの失敗していい数　残機
@@ -396,6 +396,7 @@ public class InstructionDancer : MonoBehaviour
         {
             CommonEndDance();
             Debug.Log("Dance Missed...");
+            StopCoroutine("UseDancers");
             foreach (var dancer in autoDancers)
             {
                 dancer.InterruptStopDance();

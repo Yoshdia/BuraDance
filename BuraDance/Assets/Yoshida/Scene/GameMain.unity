@@ -602,7 +602,12 @@ MonoBehaviour:
   - {fileID: 1617859036}
   - {fileID: 21951108}
   matchDancer: {fileID: 1630608580}
+  IntervalInputLimit: 0.4
+  IntervalLastDance: 0.15
+  IntervalResultDance: 0.2
+  IntervalRestartDance: 0.3
   successPlusScore: 40
+  IntervalGameOverFall: 0.12
   hitPoint: 0
   HitPointMax: 3
 --- !u!4 &467744241
