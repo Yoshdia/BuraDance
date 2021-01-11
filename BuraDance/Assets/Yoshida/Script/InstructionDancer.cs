@@ -7,29 +7,35 @@ using UnityEngine;
 /// </summary>
 public class InstructionDancer : MonoBehaviour
 {
-    [SerializeField]
+    /// <summary>
+    /// ゲーム本編が開始したかどうか
+    /// 開幕の演出を管理するときに使う
+    /// </summary>
+    bool startedDance = false;
+
     /// <summary>
     /// ステップの最大数、増加する
     /// </summary>
+    [SerializeField]
     private int stepCountMax = 3;
 
-    [SerializeField]
     /// <summary>
     /// フレーズの最短時間
     /// </summary>
+    [SerializeField]
     private float phraseTimeMax = 0.4f;
 
-    [SerializeField]
     /// <summary>
     /// Phraseの情報に合わせお手本として踊るダンサー達
     /// Inspectorから追加する必要あり
     /// </summary>
+    [SerializeField]
     List<AutoDancer> autoDancers = new List<AutoDancer>();
 
-    [SerializeField]
     /// <summary>
     /// ダンスを真似するクラス
     /// </summary>    
+    [SerializeField]
     MatchDancer matchDancer = default;
 
     /// <summary>
@@ -43,18 +49,22 @@ public class InstructionDancer : MonoBehaviour
     /// </summary>
     bool intervalLastDancing = false;
 
-    [SerializeField]
     /// <summary>
     /// プレイヤーの判定が終わり成否結果を出すまでの間隔 
     /// これが無いとプレイヤーの最後のダンスが再生されない
     /// </summary>
+    [SerializeField]
     float IntervalLastDance = 0.15f;
+
+    bool intervalResultDancing = false;
+    [SerializeField]
+    float IntervalResultDance = 0.20f;
 
     /// <summary>
     /// 1フレーズが終わったときに建つフラグ
     /// プレイヤーの判定が終わった後のエフェクト再生や次のフレーズに移行する処理を書くために必要
     /// </summary>
-    bool restartingPhrase = false;
+    bool intervalRestartDancing = false;
 
     [SerializeField]
     /// <summary>
@@ -68,12 +78,6 @@ public class InstructionDancer : MonoBehaviour
     int danceResult = 0;
 
     /// <summary>
-    /// ゲーム本編が開始したかどうか
-    /// 開幕の演出を管理するときに使う
-    /// </summary>
-    bool startedDance = false;
-
-    /// <summary>
     /// スコアを表示させるためのクラス
     /// </summary>
     ScoreDisplayer scoreDisplayer;
@@ -83,6 +87,22 @@ public class InstructionDancer : MonoBehaviour
     /// ダンスが成功したときの加算スコア
     /// </summary>
     int successPlusScore = 40;
+
+    /// <summary>
+    /// ダンス・ゲーム本編の開始
+    /// </summary>
+    public void StartDance()
+    {
+        startedDance = true;
+        //待機ダンス再生
+        foreach (var dancer in autoDancers)
+        {
+            dancer.StartIdleDance();
+        }
+        matchDancer.StartIdleDance();
+        //ダンス開始まで待機
+        StartCoroutine("IntervalRestartDancing", IntervalRestartDance);
+    }
 
     private void Start()
     {
@@ -128,28 +148,12 @@ public class InstructionDancer : MonoBehaviour
             }
         }
     }
-
-    /// <summary>
-    /// ダンス・ゲーム本編の開始
-    /// </summary>
-    public void StartDance()
-    {
-        startedDance = true;
-        //待機ダンス再生
-        foreach (var dancer in autoDancers)
-        {
-            dancer.StartIdleDance();
-        }
-        matchDancer.StartIdleDance();
-        //ダンス開始まで待機
-        StartCoroutine("IntervalRestartDancing", IntervalRestartDance);
-    }
-
+    
     /// <summary>
     /// ダンサーそれぞれに躍らせるフレーズを生成
     /// </summary>
     /// <returns>生成した構造体フレーズ</returns>
-    private Phrase CreatePhrase()
+    Phrase CreatePhrase()
     {
         //定められた定数の範囲の乱数でこのフレーズのステップ数とステップ時間を決定
         int stepCount = Random.Range(1, stepCountMax + 1);
@@ -184,7 +188,7 @@ public class InstructionDancer : MonoBehaviour
     /// </summary>
     /// <param name = "_onePhrase" > 踊らせたいフレーズ </ param >
     /// < returns ></ returns >
-    private IEnumerator UseDancers(Phrase _onePhrase)
+    IEnumerator UseDancers(Phrase _onePhrase)
     {
         //frameに代入するための一時的な定数
         float phraseTime = (float)_onePhrase.phraseTime;
@@ -244,6 +248,27 @@ public class InstructionDancer : MonoBehaviour
             dancer.ResultDancing(danceResult);
         }
         matchDancer.ResultDancing(danceResult);
+        //結果を表示する時間
+        StartCoroutine("IntervalResultDancing", IntervalResultDance);
+    }
+
+    IEnumerator IntervalResultDancing(float _interval)
+    {
+        //増減する待機用変数
+        float interval = _interval;
+        intervalRestartDancing = true;
+        while (interval > 0)
+        {
+            yield return null;
+            interval -= 0.01f;
+        }
+        intervalRestartDancing = false;
+
+        foreach (var dancer in autoDancers)
+        {
+            dancer.RestartDance();
+        }
+        matchDancer.RestartDance();
         //次のダンスまでの時間
         StartCoroutine("IntervalRestartDancing", IntervalRestartDance);
     }
@@ -257,13 +282,13 @@ public class InstructionDancer : MonoBehaviour
     {
         //増減する待機用変数
         float interval = _interval;
-        restartingPhrase = true;
+        intervalRestartDancing = true;
         while (interval > 0)
         {
             yield return null;
             interval -= 0.01f;
         }
-        restartingPhrase = false;
+        intervalRestartDancing = false;
 
         //フレーズ生成
         Instruction();
@@ -272,7 +297,7 @@ public class InstructionDancer : MonoBehaviour
     /// <summary>
     /// 手本通りのダンスに成功した処理
     /// </summary>
-    private void SuccessDance()
+    void SuccessDance()
     {
         CommonEndDance();
         Debug.Log("Dance Clear!");
@@ -282,7 +307,7 @@ public class InstructionDancer : MonoBehaviour
     /// <summary>
     /// 手本通りのダンスに失敗
     /// </summary>
-    private void FailDance()
+    void FailDance()
     {
         CommonEndDance();
         Debug.Log("Dance Missed...");
@@ -294,6 +319,7 @@ public class InstructionDancer : MonoBehaviour
 
     /// <summary>
     /// ダンスの成功･失敗時の共通処理
+    /// 成否の演出はIntervalLastDancing内で
     /// </summary>
     void CommonEndDance()
     {

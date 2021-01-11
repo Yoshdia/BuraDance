@@ -97,7 +97,14 @@ public class AutoDancer : MonoBehaviour
     {
         animator.SetBool("StartDance", true);
     }
-
+    /// <summary>
+    /// 結果を表示した後に待機ダンスを再生させるトリガー
+    /// 待機ダンスの再生に差を作らないため必要
+    /// </summary>
+    public void RestartDance()
+    {
+        animator.SetTrigger("Restart");
+    }
 
 }
 
