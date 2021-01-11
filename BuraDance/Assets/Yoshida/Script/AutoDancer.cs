@@ -54,7 +54,7 @@ public class AutoDancer : MonoBehaviour
             {
                 // frameで指定したフレームだけループ
                 yield return null;
-                stepInterval -= 0.016f;
+                stepInterval -= 0.01f;
             }
             if (step != StepDirection.NoStep)
             {

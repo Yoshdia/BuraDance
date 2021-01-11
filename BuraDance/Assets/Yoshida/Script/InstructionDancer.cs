@@ -41,15 +41,14 @@ public class InstructionDancer : MonoBehaviour
     /// フレーズを終わらせるときに建つフラグ
     /// プレイヤーの判定が終わり成否結果を出すまでの間使われるフラグ
     /// </summary>
-    bool closingPhrase = false;
+    bool intervalLastDancing = false;
 
     [SerializeField]
     /// <summary>
     /// プレイヤーの判定が終わり成否結果を出すまでの間隔 
     /// これが無いとプレイヤーの最後のダンスが再生されない
     /// </summary>
-    float ClosingPhraseInterval = 15;
-    float closingPhraseInterval = 0.0f;
+    float IntervalLastDance = 0.15f;
 
     /// <summary>
     /// 1フレーズが終わったときに建つフラグ
@@ -61,13 +60,12 @@ public class InstructionDancer : MonoBehaviour
     /// <summary>
     /// フレーズ間のインターバル
     /// </summary>
-    public float PhraseInterval = 30.0f;
-    float phraseInterval = 0.0f;
+    public float IntervalRestartDance = 0.3f;
 
     /// <summary>
     /// ダンスの結果を所持
     /// </summary>
-    int danceResult=0;
+    int danceResult = 0;
 
     /// <summary>
     /// ゲーム本編が開始したかどうか
@@ -84,28 +82,25 @@ public class InstructionDancer : MonoBehaviour
     /// <summary>
     /// ダンスが成功したときの加算スコア
     /// </summary>
-    int successPlusScore=40;
+    int successPlusScore = 40;
 
     private void Start()
     {
-        phraseInterval = PhraseInterval;
-        closingPhraseInterval = ClosingPhraseInterval;
-        restartingPhrase = true;
-
         startedDance = false;
-
+        //フレームレート固定
         Application.targetFrameRate = 20;
-
-        scoreDisplayer=GetComponent<ScoreDisplayer>();
+        scoreDisplayer = GetComponent<ScoreDisplayer>();
     }
 
     private void Update()
     {
-        if(!startedDance)
+        //すべての処理が始まっているか。外部からStartDanceを呼ばれるとこのフラグが建つ
+        if (!startedDance)
         {
             return;
         }
-        //AutoDancer達の処理が終了しMatchDancerとのダンスを照合する
+
+        //AutoDancer達の処理が終了しMatchDancerとのダンスを照合する(お手本が終わって入力を待つ
         if (endAutoDance)
         {
             //MatchDancerに踊らせその入力を取得
@@ -123,7 +118,8 @@ public class InstructionDancer : MonoBehaviour
         }
         else
         {
-            bool noFlag=false;
+            //お手本が終了していないときに入力すると失敗になる
+            bool noFlag = false;
             matchDancer.InputDance(ref noFlag);
             if (noFlag)
             {
@@ -131,53 +127,22 @@ public class InstructionDancer : MonoBehaviour
                 FailDance();
             }
         }
-
-        //このフレーズを終わらせる
-        if (closingPhrase)
-            {
-                if (closingPhraseInterval >= 0)
-                {
-                    closingPhraseInterval--;
-                }
-                else
-                {
-                    closingPhraseInterval = ClosingPhraseInterval;
-                    closingPhrase = false;
-
-                    foreach (var dancer in autoDancers)
-                    {
-                        dancer.ResultDancing(danceResult);
-                    }
-                    matchDancer.ResultDancing(danceResult);
-                    //フレーズ間を移行
-                    restartingPhrase = true;
-                }
-            }
-            else if (restartingPhrase)
-            {
-                if (phraseInterval >= 0)
-                {
-                    phraseInterval--;
-                }
-                else
-                {
-                    Instruction();
-
-                    phraseInterval = PhraseInterval;
-                    restartingPhrase = false;
-                }
-            }       
-
     }
 
+    /// <summary>
+    /// ダンス・ゲーム本編の開始
+    /// </summary>
     public void StartDance()
     {
         startedDance = true;
+        //待機ダンス再生
         foreach (var dancer in autoDancers)
         {
             dancer.StartIdleDance();
         }
         matchDancer.StartIdleDance();
+        //ダンス開始まで待機
+        StartCoroutine("IntervalRestartDancing", IntervalRestartDance);
     }
 
     /// <summary>
@@ -188,7 +153,6 @@ public class InstructionDancer : MonoBehaviour
     {
         //定められた定数の範囲の乱数でこのフレーズのステップ数とステップ時間を決定
         int stepCount = Random.Range(1, stepCountMax + 1);
-
         return new Phrase(stepCount, phraseTimeMax);
     }
 
@@ -222,25 +186,28 @@ public class InstructionDancer : MonoBehaviour
     /// < returns ></ returns >
     private IEnumerator UseDancers(Phrase _onePhrase)
     {
+        //frameに代入するための一時的な定数
         float phraseTime = (float)_onePhrase.phraseTime;
+        //増減する待機用の変数
         float frame = phraseTime;
+
         //AutoDancerに指示した回数
         int dancerCount = 0;
+
         //一人目からフレーズを渡し踊らせ、１フレーズ分の時間が経過すると次のダンサーに踊らせる
-        //ダンサーの数繰り返す。
         foreach (var dancer in autoDancers)
         {
             dancer.Dance(_onePhrase);
-            ////１フレーズ分待たせる    
+            //１フレーズ分待たせる    
             while (frame > 0)
             {
                 // frameで指定したフレームだけループ
                 yield return null;
-                frame -= 0.016f;
+                frame -= 0.01f;
             }
             frame = phraseTime;
             dancerCount++;
-            //最後のAutoDancerに踊らせるとき待機時間を１ステップ分減らす
+            //最後のAutoDancerに踊らせるとき待機時間を１ステップ分減らす(お手本の最後のダンスが終わった直後に入力を許可するため
             if (dancerCount == autoDancers.Count - 1)
             {
                 frame -= ((float)_onePhrase.phraseTime / ((float)_onePhrase.stepCount));
@@ -254,14 +221,61 @@ public class InstructionDancer : MonoBehaviour
     }
 
     /// <summary>
+    /// プレイヤーが最後のダンスを終えて結果を待つ時間
+    /// この時間無いと最後のダンスが表示される前に結果が出てしまう
+    /// </summary>
+    /// <param name="_interval">時間</param>
+    /// <returns></returns>
+    IEnumerator IntervalLastDancing(float _interval)
+    {
+        //増減する待機用変数
+        float interval = _interval;
+        intervalLastDancing = true;
+        while (interval > 0)
+        {
+            yield return null;
+            interval -= 0.01f;
+        }
+        intervalLastDancing = false;
+
+        //結果を表示させる
+        foreach (var dancer in autoDancers)
+        {
+            dancer.ResultDancing(danceResult);
+        }
+        matchDancer.ResultDancing(danceResult);
+        //次のダンスまでの時間
+        StartCoroutine("IntervalRestartDancing", IntervalRestartDance);
+    }
+
+    /// <summary>
+    /// 結果の表示から次のダンスまでの間隔
+    /// </summary>
+    /// <param name="_interval">時間</param>
+    /// <returns></returns>
+    IEnumerator IntervalRestartDancing(float _interval)
+    {
+        //増減する待機用変数
+        float interval = _interval;
+        restartingPhrase = true;
+        while (interval > 0)
+        {
+            yield return null;
+            interval -= 0.01f;
+        }
+        restartingPhrase = false;
+
+        //フレーズ生成
+        Instruction();
+    }
+
+    /// <summary>
     /// 手本通りのダンスに成功した処理
     /// </summary>
     private void SuccessDance()
     {
+        CommonEndDance();
         Debug.Log("Dance Clear!");
-        closingPhrase = true;
-        endAutoDance = false;
-        StopCoroutine("UseDancers");
         scoreDisplayer.PlusScore(successPlusScore);
     }
 
@@ -270,13 +284,21 @@ public class InstructionDancer : MonoBehaviour
     /// </summary>
     private void FailDance()
     {
+        CommonEndDance();
         Debug.Log("Dance Missed...");
-        closingPhrase = true;
-        endAutoDance = false;
-        StopCoroutine("UseDancers");
-        foreach(var dancer in autoDancers)
+        foreach (var dancer in autoDancers)
         {
             dancer.InterruptStopDance();
         }
+    }
+
+    /// <summary>
+    /// ダンスの成功･失敗時の共通処理
+    /// </summary>
+    void CommonEndDance()
+    {
+        endAutoDance = false;
+        StopCoroutine("UseDancers");
+        StartCoroutine("IntervalLastDancing", IntervalLastDance);
     }
 }

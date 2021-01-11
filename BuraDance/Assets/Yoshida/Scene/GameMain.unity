@@ -597,13 +597,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stepCountMax: 3
-  phraseTimeMax: 0.4
+  phraseTimeMax: 0.3
   autoDancers:
   - {fileID: 1617859036}
   - {fileID: 21951108}
   matchDancer: {fileID: 1630608580}
-  ClosingPhraseInterval: 15
-  PhraseInterval: 30
+  ClosingPhraseInterval: 0.15
+  PhraseInterval: 0.3
   successPlusScore: 40
 --- !u!4 &467744241
 Transform:
