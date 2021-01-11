@@ -44,6 +44,18 @@ public class InstructionDancer : MonoBehaviour
     bool endAutoDance = false;
 
     /// <summary>
+    /// お手本のダンスが終わった後入力を受け付けているか
+    /// </summary>
+    bool intervalInputLimit = false;
+
+    /// <summary>
+    /// お手本のダンスが終わった後入力を受け付ける時間
+    /// 0になると失敗になる
+    /// </summary>
+    [SerializeField]
+    const float IntervalInputLimit = 0.4f;
+    
+    /// <summary>
     /// フレーズを終わらせるときに建つフラグ
     /// プレイヤーの判定が終わり成否結果を出すまでの間使われるフラグだった
     /// </summary>
@@ -54,7 +66,7 @@ public class InstructionDancer : MonoBehaviour
     /// これが無いとプレイヤーの最後のダンスが再生されない
     /// </summary>
     [SerializeField]
-    float IntervalLastDance = 0.15f;
+    const float IntervalLastDance = 0.15f;
 
     /// <summary>
     /// 結果を表示しているときに建つフラグ
@@ -64,7 +76,7 @@ public class InstructionDancer : MonoBehaviour
     /// 結果を表示している時間
     /// </summary>
     [SerializeField]
-    float IntervalResultDance = 0.20f;
+    const float IntervalResultDance = 0.20f;
 
     /// <summary>
     /// 1フレーズが終わったときに建つフラグ
@@ -76,7 +88,7 @@ public class InstructionDancer : MonoBehaviour
     /// フレーズ間のインターバル
     /// </summary>
     [SerializeField]
-    public float IntervalRestartDance = 0.3f;
+    const float IntervalRestartDance = 0.3f;
 
     /// <summary>
     /// ダンスの結果を所持
@@ -139,6 +151,12 @@ public class InstructionDancer : MonoBehaviour
             //失敗
             else if (danceResult == -1)
             {
+                FailDance();
+            }
+            //時間切れ　失敗
+            else if(intervalInputLimit)
+            {
+                danceResult = -1;
                 FailDance();
             }
         }
@@ -230,7 +248,26 @@ public class InstructionDancer : MonoBehaviour
         matchDancer.RefreshPhrase(_onePhrase);
         //AutoDancerの処理が終了
         endAutoDance = true;
+        StartCoroutine("IntervalInputLimiter", IntervalInputLimit);
         Debug.Log("DanceEnd");
+    }
+
+    /// <summary>
+    /// お手本のダンスが終わった後入力を受け付ける時間
+    /// </summary>
+    /// <param name="_interval">時間</param>
+    /// <returns></returns>
+    IEnumerator IntervalInputLimiter(float _interval)
+    {
+        float interval = _interval;
+        intervalInputLimit = false;
+        while (interval > 0)
+        {
+            intervalInputLimit = false;
+            yield return null;
+            interval -= 0.01f;
+        }
+        intervalInputLimit = true;
     }
 
     /// <summary>
@@ -341,5 +378,7 @@ public class InstructionDancer : MonoBehaviour
         endAutoDance = false;
         StopCoroutine("UseDancers");
         StartCoroutine("IntervalLastDancing", IntervalLastDance);
+        StopCoroutine("IntervalInputLimiter");
+        //intervalInputLimit = false;
     }
 }
