@@ -131,6 +131,24 @@ public class InstructionDancer : MonoBehaviour
     int HitPointMax = 3;
 
     /// <summary>
+    /// 直接的に最終スコアに影響はなく、ダンスが成功するたびにスコアと並行で増え最大になるとまたゼロになるフィーバー用スコア
+    /// </summary>
+    int shortScoreGauge = 0;
+
+    /// <summary>
+    /// shortScoreGaugeの最大値
+    /// </summary>
+    [SerializeField]
+    int ShortScoreMax = 2;
+
+    /// <summary>
+    /// フィーバー状態か。
+    /// フィーバー中はこのクラスの更新を止めさせる必要がある
+    /// </summary>
+    bool feaver = false;
+    FeaversOwner feaversOwner;
+
+    /// <summary>
     /// ダンス・ゲーム本編の開始
     /// </summary>
     public void StartDance()
@@ -146,9 +164,14 @@ public class InstructionDancer : MonoBehaviour
         StartCoroutine("IntervalRestartDancing", IntervalRestartDance);
     }
 
+
+
     private void Start()
     {
         hitPoint = HitPointMax;
+        shortScoreGauge = 0;
+        feaver = false;
+        feaversOwner = GetComponent<FeaversOwner>();
         startedDance = false;
         //フレームレート固定
         Application.targetFrameRate = 20;
@@ -158,9 +181,26 @@ public class InstructionDancer : MonoBehaviour
     private void Update()
     {
         //すべての処理が始まっているか。終わっていないか。外部からStartDanceを呼ばれるとこのフラグが建つ
-        if (!startedDance && !endDance)
+        if (!startedDance
+            && !endDance)
         {
             return;
+        }
+
+        if (feaver)
+        {
+            if (feaversOwner.EndFeavers())
+            {
+                scoreDisplayer.PlusScore(feaversOwner.GetFeaversScore());
+                danceResult = 1;
+                StartCoroutine("IntervalLastDancing", 0);
+                shortScoreGauge = 0;
+                feaver = false;
+            }
+            else
+            {
+                return;
+            }
         }
 
         //AutoDancer達の処理が終了しMatchDancerとのダンスを照合する(お手本が終わって入力を待つ
@@ -349,8 +389,17 @@ public class InstructionDancer : MonoBehaviour
             dancer.RestartDance();
         }
         matchDancer.RestartDance();
-        //次のダンスまでの時間
-        StartCoroutine("IntervalRestartDancing", IntervalRestartDance);
+        //shortScoreGaugeが一定以上なら特殊演出、そうでないなら通常通り繰り返す
+        if (shortScoreGauge >= ShortScoreMax)
+        {
+            feaver = true;
+            feaversOwner.ActiveFeaver();
+        }
+        else
+        {
+            //次のダンスまでの時間
+            StartCoroutine("IntervalRestartDancing", IntervalRestartDance);
+        }
     }
 
     /// <summary>
@@ -382,6 +431,7 @@ public class InstructionDancer : MonoBehaviour
         CommonEndDance();
         Debug.Log("Dance Clear!");
         scoreDisplayer.PlusScore(successPlusScore);
+        shortScoreGauge++;
     }
 
     /// <summary>
