@@ -28,7 +28,7 @@ public class InstructionDancer : MonoBehaviour
     /// フレーズの最短時間
     /// </summary>
     [SerializeField]
-    float intervalStep = 0.4f;
+    float intervalStep = 0.08f;
 
     /// <summary>
     /// Phraseの情報に合わせお手本として踊るダンサー達
@@ -71,7 +71,7 @@ public class InstructionDancer : MonoBehaviour
     /// これが無いとプレイヤーの最後のダンスが再生されない
     /// </summary>
     [SerializeField]
-    float IntervalLastDance = 0.15f;
+    float IntervalLastDance = 0.08f;
 
     /// <summary>
     /// 結果を表示しているときに建つフラグ
@@ -81,7 +81,7 @@ public class InstructionDancer : MonoBehaviour
     /// 結果を表示している時間
     /// </summary>
     [SerializeField]
-    float IntervalResultDance = 0.20f;
+    float IntervalResultDance = 0.11f;
 
     /// <summary>
     /// 1フレーズが終わったときに建つフラグ
