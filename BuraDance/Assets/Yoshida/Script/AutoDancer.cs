@@ -9,6 +9,30 @@ public class AutoDancer : MonoBehaviour
     /// </summary>
     private Animator animator;
 
+    /// <summary>
+    /// 右にステップしたときのエフェクト再生位置
+    /// </summary>
+    [SerializeField]
+    Transform throwRightPosition;
+
+    /// <summary>
+    /// 左にステップしたときのエフェクト再生位置
+    /// </summary>
+    [SerializeField]
+    Transform throwLeftPosition;
+
+    /// <summary>
+    /// 右にステップしたときのエフェクト
+    /// </summary>
+    [SerializeField]
+    GameObject throwRightObject;
+
+    /// <summary>
+    /// 左にステップしたときのエフェクト
+    /// </summary>
+    [SerializeField]
+    GameObject throwLeftObject;
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -31,7 +55,7 @@ public class AutoDancer : MonoBehaviour
     public IEnumerator AutoDance(Phrase _phrase)
     {
         //ステップの間隔
-        float stepInterval = (float)_phrase.phraseTime ;
+        float stepInterval = (float)_phrase.phraseTime;
 
         //ステップ情報を基にアニメーションさせる
         foreach (var step in _phrase.stepTable)
@@ -40,13 +64,20 @@ public class AutoDancer : MonoBehaviour
             if (step == StepDirection.LeftStep)
             {
                 animator.SetTrigger("LeftDance");
-                Debug.Log("Left",this.gameObject);
+                Debug.Log("Left", this.gameObject);
+                //左方向にステップエフェクトを再生しこのオブジェクトの親を親にする
+                GameObject bura = Instantiate(throwLeftObject, throwLeftPosition.position, Quaternion.identity);
+                bura.transform.SetParent(this.transform);
             }
             //右
             else if (step == StepDirection.RightStep)
             {
                 animator.SetTrigger("RightDance");
                 Debug.Log("Right");
+                //右方向にステップエフェクトを再生しこのオブジェクトの親を親にする
+                GameObject bura = Instantiate(throwRightObject, throwRightPosition.position, Quaternion.identity);
+                bura.transform.SetParent(this.transform);
+
             }
             //ステップの間隔を待つ
             // ループ

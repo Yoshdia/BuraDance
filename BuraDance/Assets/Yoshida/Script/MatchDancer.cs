@@ -15,6 +15,30 @@ public class MatchDancer : MonoBehaviour
     /// </summary>
     int stepNumber = -1;
 
+    /// <summary>
+    /// 右にステップしたときのエフェクト再生位置
+    /// </summary>
+    [SerializeField]
+    Transform throwRightPosition;
+
+    /// <summary>
+    /// 左にステップしたときのエフェクト再生位置
+    /// </summary>
+    [SerializeField]
+    Transform throwLeftPosition;
+
+    /// <summary>
+    /// 右にステップしたときのエフェクト
+    /// </summary>
+    [SerializeField]
+    GameObject throwRightObject;
+
+    /// <summary>
+    /// 左にステップしたときのエフェクト
+    /// </summary>
+    [SerializeField]
+    GameObject throwLeftObject;
+
     void Awake()
     {
         animator = GetComponent<Animator>();
@@ -75,6 +99,9 @@ public class MatchDancer : MonoBehaviour
             _pushed = true;
 
             stepNumber++;
+            //左方向にステップエフェクトを再生しこのオブジェクトの親を親にする
+            GameObject bura = Instantiate(throwLeftObject, throwLeftPosition.position, Quaternion.identity);
+            bura.transform.SetParent(this.transform);
             return StepDirection.LeftStep;
         }
         else if (Input.GetMouseButtonDown(1))
@@ -84,6 +111,9 @@ public class MatchDancer : MonoBehaviour
             _pushed = true;
 
             stepNumber++;
+            //右方向にステップエフェクトを再生しこのオブジェクトの親を親にする
+            GameObject bura = Instantiate(throwRightObject, throwRightPosition.position, Quaternion.identity);
+            bura.transform.SetParent(this.transform);
             return StepDirection.RightStep;
         }
         return StepDirection.NoStep;
