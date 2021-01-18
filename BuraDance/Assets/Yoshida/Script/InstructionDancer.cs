@@ -149,7 +149,13 @@ public class InstructionDancer : MonoBehaviour
     FeaversOwner feaversOwner;
 
     /// <summary>
-    /// ダンス・ゲーム本編の開始
+    /// ゲーム開始のカーテン、関数呼び出しや
+    /// ゲーム終了のカーテン、関数呼び出しを行わせるアニメーター
+    /// </summary>
+    Animator animator;
+
+    /// <summary>
+    /// ダンス・ゲーム本編の開始 このオブジェクトにアタッチされているAnimationから呼ばれる
     /// </summary>
     public void StartDance()
     {
@@ -176,6 +182,7 @@ public class InstructionDancer : MonoBehaviour
         //フレームレート固定
         Application.targetFrameRate = 20;
         scoreDisplayer = GetComponent<ScoreDisplayer>();
+        animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -497,5 +504,6 @@ public class InstructionDancer : MonoBehaviour
             dancer.GameOverDance();
             frame = IntervalGameOverFall;
         }
+        animator.SetTrigger("Close");
     }
 }
