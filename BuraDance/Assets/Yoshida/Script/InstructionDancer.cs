@@ -167,8 +167,8 @@ public class InstructionDancer : MonoBehaviour
         }
         matchDancer.StartIdleDance();
         //ダンス開始まで待機
-        StartCoroutine("IntervalRestartDancing", IntervalRestartDance);
-    }
+        StartCoroutine("IntervalLastDancing", 0.3f);
+    }-
 
 
 
