@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ScoreDisplayer : MonoBehaviour
 {
@@ -9,11 +10,17 @@ public class ScoreDisplayer : MonoBehaviour
     /// </summary>
     //int nowScoreSum;
 
+    /// <summary>
+    /// displayerに表示させるスコア
+    /// stackScore*100を足すとスコアの合計になる
+    /// </summary>
     int shortScore;
 
+    /// <summary>
+    /// displayerの表示をオーバーするスコアを記憶する変数
+    /// shortScore*100を足すとスコアの合計になる
+    /// </summary>
     int stackScore;
-
-    int displayersLength;
 
     /// <summary>
     /// スコアに応じてサイズが変わるオブジェクト達
@@ -33,16 +40,24 @@ public class ScoreDisplayer : MonoBehaviour
     /// </summary>
     const float mostSpeedChangeScale = 1.2f;
 
+    /// <summary>
+    /// stackScoreを表示するためのText
+    /// </summary>
+    [SerializeField]
+    Text stackText;
+
+    FontScript texter;
+
     void Start()
     {
         //nowScoreSum = 0;
-        displayersLength = displayers.Length;
         shortScore = 0;
         defaultScale = displayers[0].transform.localScale;
         foreach (ToDisplay displayer in displayers)
         {
             displayer.ResetScale();
         }
+        texter = GetComponent<FontScript>();
     }
 
     /// <summary>
@@ -52,14 +67,15 @@ public class ScoreDisplayer : MonoBehaviour
     public void PlusScore(int _score)
     {
         shortScore += _score;
-        if(shortScore>= displayersLength*100)
+        if(shortScore>= displayers .Length* 100)
         {
-            stackScore += displayersLength;
-            shortScore -= displayersLength * 100;
+            stackScore += displayers.Length;
+            shortScore -= displayers.Length * 100;
             foreach(ToDisplay displayer in displayers)
             {
                 displayer.ResetScale();
             }
+            //texter.SetSpriteNumber(stackScore);
         }
         UpdateScoreDisplayers();
     }
