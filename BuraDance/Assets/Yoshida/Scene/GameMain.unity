@@ -813,7 +813,7 @@ MonoBehaviour:
   IntervalGameOverFall: 0.12
   hitPoint: 0
   HitPointMax: 3
-  ShortScoreMax: 8
+  ShortScoreMax: 14
 --- !u!4 &467744241
 Transform:
   m_ObjectHideFlags: 0

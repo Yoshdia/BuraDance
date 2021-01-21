@@ -7,7 +7,13 @@ public class ScoreDisplayer : MonoBehaviour
     /// <summary>
     /// スコア合計
     /// </summary>
-    int nowScore;
+    //int nowScoreSum;
+
+    int shortScore;
+
+    int stackScore;
+
+    int displayersLength;
 
     /// <summary>
     /// スコアに応じてサイズが変わるオブジェクト達
@@ -22,7 +28,6 @@ public class ScoreDisplayer : MonoBehaviour
     /// </summary>
     Vector3 defaultScale;
 
-
     /// <summary>
     /// displayersを拡大する最大速度
     /// </summary>
@@ -30,7 +35,9 @@ public class ScoreDisplayer : MonoBehaviour
 
     void Start()
     {
-        nowScore = 0;
+        //nowScoreSum = 0;
+        displayersLength = displayers.Length;
+        shortScore = 0;
         defaultScale = displayers[0].transform.localScale;
         foreach (ToDisplay displayer in displayers)
         {
@@ -44,7 +51,16 @@ public class ScoreDisplayer : MonoBehaviour
     /// <param name="_score"></param>
     public void PlusScore(int _score)
     {
-        nowScore += _score;
+        shortScore += _score;
+        if(shortScore>= displayersLength*100)
+        {
+            stackScore += displayersLength;
+            shortScore -= displayersLength * 100;
+            foreach(ToDisplay displayer in displayers)
+            {
+                displayer.ResetScale();
+            }
+        }
         UpdateScoreDisplayers();
     }
 
@@ -56,9 +72,9 @@ public class ScoreDisplayer : MonoBehaviour
         ///for文に使用するdisplayer用の引数
         int i = 0;
 
-        //int m = (int)(nowScore / 100);
+        //int m = (int)(nowScoreSum / 100);
         //100で割り切れる分をdisplayerに表示する(340だった場合300分を表示するため3つのdisplayerを最大拡張に指示
-        for (; i < (int)(nowScore / 100); i++)
+        for (; i < (int)(shortScore / 100); i++)
         {
             //オーバーロード対策
             if (i >= displayers.Length)
@@ -68,8 +84,8 @@ public class ScoreDisplayer : MonoBehaviour
             //最大サイズに変えさせる
             displayers[i].ScaleChange(defaultScale, mostSpeedChangeScale);
         }
-        ///nowScoreを100で割った余り
-        float surplusScore = nowScore % 100;
+        ///nowScoreSumを100で割った余り
+        float surplusScore = shortScore % 100;
         //0以上、余りがあるとき(150のときの50
         if (surplusScore > 0)
         {
