@@ -167,8 +167,8 @@ public class InstructionDancer : MonoBehaviour
         }
         matchDancer.StartIdleDance();
         //ダンス開始まで待機
-        StartCoroutine("IntervalLastDancing", 0.3f);
-    }-
+        StartCoroutine("IntervalResultDancing", 0.2f);
+    }
 
 
 
@@ -474,8 +474,8 @@ public class InstructionDancer : MonoBehaviour
     {
         endAutoDance = false;
         StopCoroutine("UseDancers");
-        StartCoroutine("IntervalLastDancing", IntervalLastDance);
         StopCoroutine("IntervalInputLimiter");
+        StartCoroutine("IntervalLastDancing", IntervalLastDance);
         //intervalInputLimit = false;
     }
 
