@@ -195,15 +195,34 @@ public class InstructionDancer : MonoBehaviour
             return;
         }
 
+        //フィーバー中は処理を停止し結果を待つ
         if (feaver)
         {
             if (feaversOwner.EndFeavers())
             {
-                scoreDisplayer.PlusScore(feaversOwner.GetFeaversScore());
-                danceResult = 1;
-                StartCoroutine("IntervalLastDancing", 0);
+                //フィーバーのスコア
+                int feaverScore = feaversOwner.GetFeaversScore();
+                scoreDisplayer.PlusScore(feaverScore);
+
+                //スコアがゼロだったとき失敗になる
+                if (feaverScore > 0)
+                {
+                    //成功
+                    danceResult = 1;
+                }
+                else
+                {
+                    //成功
+                    danceResult = -1;
+                }
+
+                //フィーバー用のゲージをリセット
                 shortScoreGauge = 0;
+                //停止
                 feaver = false;
+
+                //結果の処理へ
+                StartCoroutine("IntervalLastDancing", 0);
             }
             else
             {

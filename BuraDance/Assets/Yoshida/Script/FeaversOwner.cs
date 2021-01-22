@@ -11,6 +11,12 @@ public class FeaversOwner : MonoBehaviour
     GameObject FeaverEffects;
 
     /// <summary>
+    /// フィーバー時の黒い背景
+    /// </summary>
+    [SerializeField]
+    GameObject FeaverBlack;
+
+    /// <summary>
     /// フィーバー達
     /// フィーバー毎にここから抽選で選ばれる
     /// </summary>
@@ -32,6 +38,7 @@ public class FeaversOwner : MonoBehaviour
             feaver.gameObject.SetActive(false);
         }
         FeaverEffects.SetActive(false);
+        FeaverBlack.SetActive(false);
     }
 
     /// <summary>
@@ -46,6 +53,7 @@ public class FeaversOwner : MonoBehaviour
         {
             //演出を開始
             FeaverEffects.SetActive(true);
+            FeaverBlack.SetActive(true);
             //フィーバー開始
             feavers[activeFeaverNumber].gameObject.SetActive(true);
             //アクティブ化したfeaversの引数保存
@@ -68,6 +76,7 @@ public class FeaversOwner : MonoBehaviour
             }
         }
         FeaverEffects.SetActive(false);
+        FeaverBlack.SetActive(false);
         return true;
     }
 
