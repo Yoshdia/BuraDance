@@ -45,6 +45,11 @@ public class ScoreDisplayer : MonoBehaviour
     /// </summary>
     FontScript texter;
 
+    private void Awake()
+    {
+        texter = GetComponent<FontScript>();        
+    }
+
     void Start()
     {
         //nowScoreSum = 0;
@@ -54,7 +59,6 @@ public class ScoreDisplayer : MonoBehaviour
         {
             displayer.ResetScale();
         }
-        texter = GetComponent<FontScript>();
     }
 
     /// <summary>
@@ -111,6 +115,10 @@ public class ScoreDisplayer : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 総合スコア取得
+    /// </summary>
+    /// <returns></returns>
     public int GetScore()
     {
         return shortScore + (stackScore * 100);

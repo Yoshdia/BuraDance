@@ -4,19 +4,34 @@ using UnityEngine;
 
 public class FeaversOwner : MonoBehaviour
 {
+    /// <summary>
+    /// フィーバー共通の演出オブジェクト
+    /// </summary>
     [SerializeField]
-    Feaver[] feavers=null;
+    GameObject FeaverEffects;
 
+    /// <summary>
+    /// フィーバー達
+    /// フィーバー毎にここから抽選で選ばれる
+    /// </summary>
+    [SerializeField]
+    Feaver[] feavers = null;
+
+    /// <summary>
+    /// feaversを抽選、停止させるための引数
+    /// </summary>
     int activeFeaverNumber = 0;
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// FeaverEffects、feaversオブジェクトを全て非アクティブに
+    /// </summary>
     void Start()
     {
-        //すべて非アクティブ
         foreach (Feaver feaver in feavers)
         {
             feaver.gameObject.SetActive(false);
         }
+        FeaverEffects.SetActive(false);
     }
 
     /// <summary>
@@ -24,16 +39,22 @@ public class FeaversOwner : MonoBehaviour
     /// </summary>
     public void ActiveFeaver()
     {
+        ///乱数
         int rand = Random.Range(1, feavers.Length) - 1;
 
         if (feavers[activeFeaverNumber] != null)
         {
-            activeFeaverNumber = rand;
+            //演出を開始
+            FeaverEffects.SetActive(true);
+            //フィーバー開始
             feavers[activeFeaverNumber].gameObject.SetActive(true);
+            //アクティブ化したfeaversの引数保存
+            activeFeaverNumber = rand;
         }
     }
 
     /// <summary>
+    /// フィーバーが終わったか
     /// 一つでもアクティブなオブジェクトがあるとfalseを返す
     /// </summary>
     /// <returns>フィーバーが終わったか</returns>
@@ -46,9 +67,14 @@ public class FeaversOwner : MonoBehaviour
                 return false;
             }
         }
+        FeaverEffects.SetActive(false);
         return true;
     }
 
+    /// <summary>
+    /// フィーバーが終わった時に成果を返す
+    /// </summary>
+    /// <returns>フィーバーの成果スコア</returns>
     public int GetFeaversScore()
     {
         return feavers[activeFeaverNumber].GetScore();

@@ -33,15 +33,27 @@ public class AutoDancer : MonoBehaviour
     [SerializeField]
     GameObject throwLeftObject;
 
+    /// <summary>
+    /// オーディオソース
+    /// </summary>
+    AudioSource audioSource;
+
+    /// <summary>
+    /// ステップ用のサウンド
+    /// </summary>
+    [SerializeField]
+    AudioClip stepSoundClip;
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     /// <summary>
-    /// 踊る
+    /// 受け取ったフレーズで踊る
     /// </summary>
-    /// <param name="_phrase">踊らせたいフレーズ</param>
+    /// <param name="_phrase">フレーズ</param>
     public void Dance(Phrase _phrase)
     {
         StartCoroutine("AutoDance", _phrase);
@@ -63,30 +75,35 @@ public class AutoDancer : MonoBehaviour
             //左
             if (step == StepDirection.LeftStep)
             {
-                animator.SetTrigger("LeftDance");
                 Debug.Log("Left", this.gameObject);
+
+                animator.SetTrigger("LeftDance");
                 //左方向にステップエフェクトを再生しこのオブジェクトの親を親にする
                 GameObject bura = Instantiate(throwLeftObject, throwLeftPosition.position, Quaternion.identity);
                 bura.transform.SetParent(this.transform);
+                //サウンド再生
+                audioSource.PlayOneShot(stepSoundClip);
             }
             //右
             else if (step == StepDirection.RightStep)
             {
-                animator.SetTrigger("RightDance");
                 Debug.Log("Right");
+
+                animator.SetTrigger("RightDance");
                 //右方向にステップエフェクトを再生しこのオブジェクトの親を親にする
                 GameObject bura = Instantiate(throwRightObject, throwRightPosition.position, Quaternion.identity);
                 bura.transform.SetParent(this.transform);
-
+                //サウンド再生
+                audioSource.PlayOneShot(stepSoundClip);
             }
-            //ステップの間隔を待つ
-            // ループ
+            //ステップの間隔を待つループ
             while (stepInterval > 0)
             {
                 // frameで指定したフレームだけループ
                 yield return null;
                 stepInterval -= 0.01f;
             }
+            //次のステップがある。終わりでないとき次のステップまでphraseTime待機させる
             if (step != StepDirection.NoStep)
             {
                 stepInterval = (float)_phrase.phraseTime;
@@ -128,6 +145,7 @@ public class AutoDancer : MonoBehaviour
     {
         animator.SetBool("StartDance", true);
     }
+
     /// <summary>
     /// 結果を表示した後に待機ダンスを再生させるトリガー
     /// 待機ダンスの再生に差を作らないため必要
@@ -137,6 +155,9 @@ public class AutoDancer : MonoBehaviour
         animator.SetTrigger("Restart");
     }
 
+    /// <summary>
+    /// ゲームオーバー、転倒させる
+    /// </summary>
     public void GameOverDance()
     {
         animator.SetTrigger("OverDance");

@@ -39,9 +39,15 @@ public class MatchDancer : MonoBehaviour
     [SerializeField]
     GameObject throwLeftObject;
 
+    AudioSource audioSource;
+
+    [SerializeField]
+    AudioClip stepSoundClip;
+
     void Awake()
     {
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     /// <summary>
@@ -102,6 +108,7 @@ public class MatchDancer : MonoBehaviour
             //左方向にステップエフェクトを再生しこのオブジェクトの親を親にする
             GameObject bura = Instantiate(throwLeftObject, throwLeftPosition.position, Quaternion.identity);
             bura.transform.SetParent(this.transform);
+            audioSource.PlayOneShot(stepSoundClip);
             return StepDirection.LeftStep;
         }
         else if (Input.GetMouseButtonDown(1))
@@ -114,6 +121,7 @@ public class MatchDancer : MonoBehaviour
             //右方向にステップエフェクトを再生しこのオブジェクトの親を親にする
             GameObject bura = Instantiate(throwRightObject, throwRightPosition.position, Quaternion.identity);
             bura.transform.SetParent(this.transform);
+            audioSource.PlayOneShot(stepSoundClip);
             return StepDirection.RightStep;
         }
         return StepDirection.NoStep;
