@@ -157,6 +157,9 @@ public class InstructionDancer : MonoBehaviour
     [SerializeField]
     SceneTransition sceneTransitioner;
 
+    [SerializeField]
+    GameObject audienceObject;
+
     /// <summary>
     /// ダンス・ゲーム本編の開始 このオブジェクトにアタッチされているAnimationから呼ばれる
     /// </summary>
@@ -173,17 +176,22 @@ public class InstructionDancer : MonoBehaviour
         StartCoroutine("IntervalResultDancing", 0.2f);
     }
 
+    private void Awake()
+    {
+        feaversOwner = GetComponent<FeaversOwner>();
+        scoreDisplayer = GetComponent<ScoreDisplayer>();
+        animator = GetComponent<Animator>();        
+    }
+
     private void Start()
     {
         hitPoint = HitPointMax;
         shortScoreGauge = 0;
         feaver = false;
-        feaversOwner = GetComponent<FeaversOwner>();
         startedDance = false;
+        audienceObject.SetActive(false);
         //フレームレート固定
         Application.targetFrameRate = 20;
-        scoreDisplayer = GetComponent<ScoreDisplayer>();
-        animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -209,11 +217,13 @@ public class InstructionDancer : MonoBehaviour
                 {
                     //成功
                     danceResult = 1;
+                    audienceObject.SetActive(true);
                 }
                 else
                 {
                     //成功
                     danceResult = -1;
+                    audienceObject.SetActive(false);
                 }
 
                 //フィーバー用のゲージをリセット
