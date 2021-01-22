@@ -52,10 +52,11 @@ public class SceneTransition : MonoBehaviour
             
         if(scene.name == "TutorialScene")
         {
-            SceneManager.LoadScene("GameScene");
+            SceneManager.LoadScene("GameMain");
         }
 
-        if(scene.name == "GameScene")
+        //if(scene.name == "GameScene")
+        if(scene.name == "GameMain")
         {
             SceneManager.LoadScene("ResultScene");
         }

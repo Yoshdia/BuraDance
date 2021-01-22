@@ -5,7 +5,7 @@ using UnityEngine;
 public class FeaversOwner : MonoBehaviour
 {
     [SerializeField]
-    Feaver[] feavers;
+    Feaver[] feavers=null;
 
     int activeFeaverNumber = 0;
 

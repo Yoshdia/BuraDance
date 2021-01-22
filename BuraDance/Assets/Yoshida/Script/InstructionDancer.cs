@@ -154,6 +154,9 @@ public class InstructionDancer : MonoBehaviour
     /// </summary>
     Animator animator;
 
+    [SerializeField]
+    SceneTransition sceneTransitioner;
+
     /// <summary>
     /// ダンス・ゲーム本編の開始 このオブジェクトにアタッチされているAnimationから呼ばれる
     /// </summary>
@@ -169,8 +172,6 @@ public class InstructionDancer : MonoBehaviour
         //ダンス開始まで待機
         StartCoroutine("IntervalResultDancing", 0.2f);
     }
-
-
 
     private void Start()
     {
@@ -505,5 +506,6 @@ public class InstructionDancer : MonoBehaviour
             frame = IntervalGameOverFall;
         }
         animator.SetTrigger("Close");
+        sceneTransitioner.ChangeScene();
     }
 }

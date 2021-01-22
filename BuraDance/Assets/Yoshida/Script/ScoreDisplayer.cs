@@ -43,9 +43,6 @@ public class ScoreDisplayer : MonoBehaviour
     /// <summary>
     /// stackScoreを表示するためのText
     /// </summary>
-    [SerializeField]
-    Text stackText;
-
     FontScript texter;
 
     void Start()
