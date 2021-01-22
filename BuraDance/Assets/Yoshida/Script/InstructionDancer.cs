@@ -506,6 +506,8 @@ public class InstructionDancer : MonoBehaviour
             frame = IntervalGameOverFall;
         }
         animator.SetTrigger("Close");
+
+        sceneTransitioner.SetScore(scoreDisplayer.GetScore());
         sceneTransitioner.ChangeScene();
     }
 }

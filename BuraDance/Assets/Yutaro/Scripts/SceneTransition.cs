@@ -7,10 +7,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
 public class SceneTransition : MonoBehaviour
 {
+    [SerializeField]
+    public int score;
 
     private bool nextScene = false;     // 次のシーンへ遷移するか
+
     /// <summary>
     /// 次のシーンへの遷移フラグをオン
     /// </summary>
@@ -19,11 +23,15 @@ public class SceneTransition : MonoBehaviour
         nextScene = true;
     }
 
+    public void SetScore(int _score)
+    {
+        score = _score;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -31,7 +39,7 @@ public class SceneTransition : MonoBehaviour
     {
         // シーン遷移のフラグが立っている
         // 左クリック・画面タッチで次のシーンへ遷移
-        if(nextScene && Input.GetMouseButton(0))
+        if (nextScene && Input.GetMouseButton(0))
         {
             ChangeScene();
         }
@@ -45,19 +53,20 @@ public class SceneTransition : MonoBehaviour
     {
         Scene scene = SceneManager.GetActiveScene();
 
-        if(scene.name == "TitleScene")
+        if (scene.name == "TitleScene")
         {
             SceneManager.LoadScene("TutorialScene");
         }
-            
-        if(scene.name == "TutorialScene")
+
+        if (scene.name == "TutorialScene")
         {
             SceneManager.LoadScene("GameMain");
         }
 
         //if(scene.name == "GameScene")
-        if(scene.name == "GameMain")
+        if (scene.name == "GameMain")
         {
+            SceneManager.sceneLoaded += GameSceneLoaded;
             SceneManager.LoadScene("ResultScene");
         }
 
@@ -66,5 +75,19 @@ public class SceneTransition : MonoBehaviour
             SceneManager.LoadScene("TitleScene");
         }
 
+    }
+
+    /// <summary>
+    /// スコアの受け渡しをしたいシーンのロード前にSceneManager.sceneLoadedに+することでLoad時にこの関数が呼ばれる
+    /// </summary>
+    /// <param name="nextScene"></param>
+    /// <param name="mode"></param>
+    void GameSceneLoaded(Scene nextScene, LoadSceneMode mode)
+    {
+        var gameManager = GameObject.FindWithTag("SceneManager").GetComponent<SceneTransition>();
+
+        gameManager.score = score;
+
+        SceneManager.sceneLoaded -= GameSceneLoaded;
     }
 }

@@ -110,4 +110,9 @@ public class ScoreDisplayer : MonoBehaviour
             displayers[i].ScaleChange(defaultScale * ((surplusScore) / 100), mostSpeedChangeScale);
         }
     }
+
+    public int GetScore()
+    {
+        return shortScore + (stackScore * 100);
+    }
 }
