@@ -15,6 +15,8 @@ public class TutorialDanceCounter : MonoBehaviour
 
     [SerializeField]
     SceneTransition scene;
+    [SerializeField]
+    ToDisplay m_dispFower;
 
     // Start is called before the first frame update
     void Start()
@@ -30,6 +32,7 @@ public class TutorialDanceCounter : MonoBehaviour
         if(Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
         {
             m_danceCount++;
+            m_dispFower.ScaleChange(new Vector3(2.5f * m_danceCount / maxCount, 2.5f * m_danceCount / maxCount, 1.0f), 0.5f);
         }
 
         // 一定数ダンスすると次のシーンへ遷移
