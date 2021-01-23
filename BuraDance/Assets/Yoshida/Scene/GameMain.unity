@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 21951112}
   - component: {fileID: 21951113}
   m_Layer: 11
-  m_Name: Burao2
+  m_Name: DanceBurao2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1101,7 +1101,7 @@ MonoBehaviour:
   IntervalGameOverFall: 0.12
   hitPoint: 0
   HitPointMax: 3
-  ShortScoreMax: 1
+  ShortScoreMax: 13
   sceneTransitioner: {fileID: 1129335020}
   audienceObject: {fileID: 2005380488}
 --- !u!4 &467744241
@@ -2624,7 +2624,7 @@ GameObject:
   - component: {fileID: 1617859038}
   - component: {fileID: 1617859040}
   m_Layer: 11
-  m_Name: Burao1
+  m_Name: DanceBurao1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2836,7 +2836,7 @@ GameObject:
   - component: {fileID: 1630608581}
   - component: {fileID: 1630608578}
   m_Layer: 11
-  m_Name: Burako
+  m_Name: DanceBurako
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

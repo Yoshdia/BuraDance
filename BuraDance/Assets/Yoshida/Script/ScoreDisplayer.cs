@@ -38,7 +38,8 @@ public class ScoreDisplayer : MonoBehaviour
     /// <summary>
     /// displayersを拡大する最大速度
     /// </summary>
-    const float mostSpeedChangeScale = 1.2f;
+    [SerializeField]
+    float mostSpeedChangeScale = 1.2f;
 
     /// <summary>
     /// stackScoreを表示するためのText
@@ -76,7 +77,7 @@ public class ScoreDisplayer : MonoBehaviour
             {
                 displayer.ResetScale();
             }
-            //texter.SetSpriteNumber(stackScore);
+            texter.SetSpriteNumber(stackScore);
         }
         UpdateScoreDisplayers();
     }

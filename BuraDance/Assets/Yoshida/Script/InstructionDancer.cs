@@ -81,7 +81,7 @@ public class InstructionDancer : MonoBehaviour
     /// 結果を表示している時間
     /// </summary>
     [SerializeField]
-    float IntervalResultDance = 0.11f;
+    float IntervalResultDance = 0.12f;
 
     /// <summary>
     /// 1フレーズが終わったときに建つフラグ
@@ -109,13 +109,13 @@ public class InstructionDancer : MonoBehaviour
     /// ダンスが成功したときの加算スコア
     /// </summary>
     [SerializeField]
-    int successPlusScore = 40;
+    int successPlusScore = 100;
 
     /// <summary>
     /// ゲームオーバー後ダンサーたちが転倒のアニメーションを再生する間隔
     /// </summary>
     [SerializeField]
-    float IntervalGameOverFall = 0.12f;
+    float IntervalGameOverFall = 0.13f;
 
     /// <summary>
     /// 残りの失敗していい数　残機
@@ -154,9 +154,15 @@ public class InstructionDancer : MonoBehaviour
     /// </summary>
     Animator animator;
 
+    /// <summary>
+    /// シーン遷移を行うクラス
+    /// </summary>
     [SerializeField]
     SceneTransition sceneTransitioner;
 
+    /// <summary>
+    /// フィーバ終了時にアクティブ化させる観客
+    /// </summary>
     [SerializeField]
     GameObject audienceObject;
 
@@ -322,6 +328,7 @@ public class InstructionDancer : MonoBehaviour
     /// < returns ></ returns >
     IEnumerator UseDancers(Phrase _onePhrase)
     {
+        Debug.Log("Used");
         //frameに代入するための一時的な定数
         float phraseTime = (float)_onePhrase.phraseTime * (float)_onePhrase.stepCount;
         //増減する待機用の変数
