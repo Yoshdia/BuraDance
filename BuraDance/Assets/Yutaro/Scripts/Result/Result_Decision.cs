@@ -24,6 +24,8 @@ public class Result_Decision : MonoBehaviour
     GameObject[] m_ranks;
     [SerializeField]
     GameObject m_audience;
+    [SerializeField]
+    Animator m_resultAnimator;
     // Start is called before the first frame update
     void Start()
     {
@@ -46,34 +48,39 @@ public class Result_Decision : MonoBehaviour
         }
 
         m_audience.SetActive(false);
+
+        m_resultAnimator = GameObject.Find("CanvasResult").GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(SaveScore.score >= rankScore[0] && SaveScore.score < rankScore[1])
+        if(SaveScore.score >= rankScore[0] && SaveScore.score < rankScore[1])   // 特級
         {
             m_bg[1].SetActive(true);
-
-            m_flowers[0].SetActive(true);
-            m_flowers[1].SetActive(true);
-            m_ranks[1].SetActive(true);
+            //m_flowers[0].SetActive(true);
+            //m_flowers[1].SetActive(true);
+            //m_ranks[1].SetActive(true);
+            m_resultAnimator.SetBool("Result_Good", true);
         }
-        else if(SaveScore.score >= rankScore[1])
+        else if(SaveScore.score >= rankScore[1])      // 最上級
         {
             m_bg[2].SetActive(true);
-
-            m_flowersS[0].SetActive(true);
-            m_flowersS[1].SetActive(true);
-            m_flowersS[2].SetActive(true);
-            m_ranks[2].SetActive(true);
-            m_audience.SetActive(true);
+            //m_flowersS[0].SetActive(true);
+            //m_flowersS[1].SetActive(true);
+            //m_flowersS[2].SetActive(true);
+            //m_ranks[2].SetActive(true);
+            //m_audience.SetActive(true);
+            m_resultAnimator.SetBool("Result_Great", true);
         }
-        else
+        else     // 上級
         {
             m_bg[0].SetActive(true);
-            m_flowers[0].SetActive(true);
-            m_ranks[0].SetActive(true);
+            //m_flowers[0].SetActive(true);
+            //m_ranks[0].SetActive(true);
+            m_resultAnimator.SetBool("Result_Normal", true);
         }
+
+        
     }
 }
