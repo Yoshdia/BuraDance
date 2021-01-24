@@ -13,13 +13,13 @@ public class AutoDancer : MonoBehaviour
     /// 右にステップしたときのエフェクト再生位置
     /// </summary>
     [SerializeField]
-    Transform throwRightPosition;
+    RectTransform throwRightPosition;
 
     /// <summary>
     /// 左にステップしたときのエフェクト再生位置
     /// </summary>
     [SerializeField]
-    Transform throwLeftPosition;
+    RectTransform throwLeftPosition;
 
     /// <summary>
     /// 右にステップしたときのエフェクト
