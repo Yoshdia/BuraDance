@@ -8,13 +8,13 @@ public class FeaversOwner : MonoBehaviour
     /// フィーバー共通の演出オブジェクト
     /// </summary>
     [SerializeField]
-    GameObject FeaverEffects;
+    GameObject FeaverEffects=null;
 
     /// <summary>
     /// フィーバー時の黒い背景
     /// </summary>
     [SerializeField]
-    GameObject FeaverBlack;
+    GameObject FeaverBlack=null;
 
     /// <summary>
     /// フィーバー達

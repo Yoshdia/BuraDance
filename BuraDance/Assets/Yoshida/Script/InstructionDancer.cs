@@ -166,6 +166,9 @@ public class InstructionDancer : MonoBehaviour
     [SerializeField]
     GameObject audienceObject;
 
+    [SerializeField]
+    GameObject successEffectObject;
+
     /// <summary>
     /// ダンス・ゲーム本編の開始 このオブジェクトにアタッチされているAnimationから呼ばれる
     /// </summary>
@@ -198,6 +201,7 @@ public class InstructionDancer : MonoBehaviour
         audienceObject.SetActive(false);
         //フレームレート固定
         Application.targetFrameRate = 20;
+        successEffectObject.SetActive(false);
     }
 
     private void Update()
@@ -400,12 +404,18 @@ public class InstructionDancer : MonoBehaviour
         }
         intervalLastDancing = false;
 
+        if (danceResult == 1)
+        {
+            successEffectObject.SetActive(false);
+            successEffectObject.SetActive(true);
+        }
         //結果を表示させる
         foreach (var dancer in autoDancers)
         {
             dancer.ResultDancing(danceResult);
         }
         matchDancer.ResultDancing(danceResult);
+
         //結果を表示する時間
         StartCoroutine("IntervalResultDancing", IntervalResultDance);
     }
@@ -443,6 +453,7 @@ public class InstructionDancer : MonoBehaviour
         {
             //次のダンスまでの時間
             StartCoroutine("IntervalRestartDancing", IntervalRestartDance);
+
         }
     }
 
@@ -476,6 +487,8 @@ public class InstructionDancer : MonoBehaviour
         Debug.Log("Dance Clear!");
         scoreDisplayer.PlusScore(successPlusScore);
         shortScoreGauge++;
+
+
     }
 
     /// <summary>
