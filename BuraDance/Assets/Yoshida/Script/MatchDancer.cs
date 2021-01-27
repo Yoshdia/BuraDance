@@ -25,21 +25,21 @@ public class MatchDancer : MonoBehaviour
     /// 左にステップしたときのエフェクト再生位置
     /// </summary>
     [SerializeField]
-    Transform throwLeftPosition;
+    Transform throwLeftPosition=null;
 
     /// <summary>
     /// 右にステップしたときのエフェクト
     /// </summary>
     [SerializeField]
-    GameObject throwRightObject;
+    GameObject throwRightObject=null;
 
     /// <summary>
     /// 左にステップしたときのエフェクト
     /// </summary>
     [SerializeField]
-    GameObject throwLeftObject;
+    GameObject throwLeftObject = null;
 
-    AudioSource audioSource;
+    AudioSource audioSource = null;
 
     [SerializeField]
     AudioClip stepSoundClip;

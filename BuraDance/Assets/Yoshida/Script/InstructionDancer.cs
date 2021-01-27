@@ -406,6 +406,7 @@ public class InstructionDancer : MonoBehaviour
             dancer.ResultDancing(danceResult);
         }
         matchDancer.ResultDancing(danceResult);
+
         //結果を表示する時間
         StartCoroutine("IntervalResultDancing", IntervalResultDance);
     }
@@ -443,6 +444,7 @@ public class InstructionDancer : MonoBehaviour
         {
             //次のダンスまでの時間
             StartCoroutine("IntervalRestartDancing", IntervalRestartDance);
+
         }
     }
 
@@ -476,6 +478,8 @@ public class InstructionDancer : MonoBehaviour
         Debug.Log("Dance Clear!");
         scoreDisplayer.PlusScore(successPlusScore);
         shortScoreGauge++;
+
+
     }
 
     /// <summary>
