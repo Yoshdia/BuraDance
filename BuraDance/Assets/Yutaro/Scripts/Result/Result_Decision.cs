@@ -13,6 +13,9 @@ public class Result_Decision : MonoBehaviour
     [SerializeField]
     int[] rankScore;
 
+    [SerializeField]
+    SceneTransition m_scene;
+
     // スコアによって変動する画像
     [SerializeField]
     GameObject[] m_bg;
@@ -55,7 +58,7 @@ public class Result_Decision : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(SaveScore.score >= rankScore[0] && SaveScore.score < rankScore[1])   // 特級
+        if(m_scene.score >= rankScore[0] && m_scene.score < rankScore[1])   // 特級
         {
             m_bg[1].SetActive(true);
             //m_flowers[0].SetActive(true);
@@ -63,7 +66,7 @@ public class Result_Decision : MonoBehaviour
             //m_ranks[1].SetActive(true);
             m_resultAnimator.SetBool("Result_Good", true);
         }
-        else if(SaveScore.score >= rankScore[1])      // 最上級
+        else if(m_scene.score >= rankScore[1])      // 最上級
         {
             m_bg[2].SetActive(true);
             //m_flowersS[0].SetActive(true);

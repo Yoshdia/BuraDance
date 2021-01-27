@@ -400,6 +400,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SceneManager
       objectReference: {fileID: 0}
+    - target: {fileID: 3961209232709901472, guid: 5021ecd9f44cf1e41889912aa65c172c,
+        type: 3}
+      propertyPath: m_TagString
+      value: SceneManager
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5021ecd9f44cf1e41889912aa65c172c, type: 3}
 --- !u!4 &311998052 stripped
@@ -451,7 +456,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15c20f8caa85ecd45b98c55bad8e62be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rankScore: c8000000d2000000
+  rankScore: dc050000b80b0000
+  m_scene: {fileID: 1162372118}
   m_bg:
   - {fileID: 1588873250}
   - {fileID: 1556377134}
@@ -655,7 +661,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -32}
+  m_AnchoredPosition: {x: 0, y: -31.99997}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &706572499
