@@ -23,6 +23,13 @@ public class Feaver : MonoBehaviour
     [SerializeField]
     GameObject RendaEffect;
 
+    /// <summary>
+    /// 連打する度に発生するエフェクトの親オブジェクト
+    /// このクラスFeaverのオブジェクトは終了時に非アクティブ化するためエフェクトを再生しきるには外に親を持つ必要がある
+    /// </summary>
+    [SerializeField]
+    Transform rendaFeaversParent;
+
     private void OnEnable()
     {
         lifeCount = 0;
@@ -46,7 +53,7 @@ public class Feaver : MonoBehaviour
             transform.position = new Vector3(Random.Range(0, 3 * 0.1f), Random.Range(0, 3 * 0.1f), 100);
             //エフェクトを再生
             GameObject efftct=Instantiate(RendaEffect,transform);
-            efftct.transform.SetParent(transform);
+            efftct.transform.SetParent(rendaFeaversParent);
         }
 
         //振動しているように見せるため初期座標に補正させる

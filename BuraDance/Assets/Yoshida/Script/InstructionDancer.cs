@@ -54,6 +54,18 @@ public class InstructionDancer : MonoBehaviour
     bool intervalInputLimit = false;
 
     /// <summary>
+    /// ゲームが始まってからダンサー達が立ち上がるまでの時間
+    /// </summary>
+    [SerializeField]
+    float intervalStandUpDancers = 0.2f;
+
+    /// <summary>
+    /// ダンサー達が立ち上がりIdleモーション後から最初のダンスまでのイントロ
+    /// </summary>
+    [SerializeField]
+    float intervalFirstDance = 1.0f;
+
+    /// <summary>
     /// お手本のダンスが終わった後入力を受け付ける時間
     /// 0になると失敗になる
     /// </summary>
@@ -188,7 +200,7 @@ public class InstructionDancer : MonoBehaviour
         }
         matchDancer.StartIdleDance();
         //ダンス開始まで待機
-        StartCoroutine("IntervalResultDancing", 0.2f);
+        StartCoroutine("GameStartPlayAnimation", 0.2f);
     }
 
     private void Awake()
@@ -579,5 +591,23 @@ public class InstructionDancer : MonoBehaviour
             frame--;
         }
         sceneTransitioner.ChangeScene();
+    }
+
+    IEnumerator GameStartPlayAnimation()
+    {
+        float interval = intervalStandUpDancers;
+        while (interval > 0)
+        {
+            yield return null;
+            interval -= 0.01f;
+        }
+
+        foreach (var dancer in autoDancers)
+        {
+            dancer.RestartDance();
+        }
+        matchDancer.RestartDance();
+
+        StartCoroutine("IntervalRestartDancing", intervalFirstDance);
     }
 }
