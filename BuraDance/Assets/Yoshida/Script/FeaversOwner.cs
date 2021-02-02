@@ -28,6 +28,8 @@ public class FeaversOwner : MonoBehaviour
     /// </summary>
     int activeFeaverNumber = 0;
 
+
+
     /// <summary>
     /// FeaverEffects、feaversオブジェクトを全て非アクティブに
     /// </summary>

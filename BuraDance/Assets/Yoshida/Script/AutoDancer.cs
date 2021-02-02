@@ -117,7 +117,7 @@ public class AutoDancer : MonoBehaviour
     /// <param name="_result">結果[1=成功,-1=失敗]</param>
     public void ResultDancing(int _result)
     {
-        if (_result == 1)
+        if (_result == 1||_result==2)
         {
             animator.SetTrigger("Happy");
             StopCoroutine("AutoDance");

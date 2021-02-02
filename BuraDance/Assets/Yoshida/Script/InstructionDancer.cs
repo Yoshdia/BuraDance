@@ -81,7 +81,10 @@ public class InstructionDancer : MonoBehaviour
     /// 結果を表示している時間
     /// </summary>
     [SerializeField]
-    float IntervalResultDance = 0.12f;
+    float IntervalResultDance = 0.01f;
+
+    [SerializeField]
+    float IntervalResultDanceLong = 0.12f;
 
     /// <summary>
     /// 1フレーズが終わったときに建つフラグ
@@ -167,6 +170,12 @@ public class InstructionDancer : MonoBehaviour
     GameObject audienceObject;
 
     /// <summary>
+    /// フィーバー成功時に発生する花吹雪のエフェクト
+    /// </summary>
+    [SerializeField]
+    GameObject sakuraFeaver;
+
+    /// <summary>
     /// ダンス・ゲーム本編の開始 このオブジェクトにアタッチされているAnimationから呼ばれる
     /// </summary>
     public void StartDance()
@@ -196,6 +205,7 @@ public class InstructionDancer : MonoBehaviour
         feaver = false;
         startedDance = false;
         audienceObject.SetActive(false);
+        sakuraFeaver.SetActive(false);
         //フレームレート固定
         Application.targetFrameRate = 20;
     }
@@ -222,14 +232,16 @@ public class InstructionDancer : MonoBehaviour
                 if (feaverScore > 0)
                 {
                     //成功
-                    danceResult = 1;
+                    danceResult = 2;
                     audienceObject.SetActive(true);
+                    sakuraFeaver.SetActive(true);
                 }
                 else
                 {
-                    //成功
+                    //失敗
                     danceResult = -1;
                     audienceObject.SetActive(false);
+                    sakuraFeaver.SetActive(false);
                 }
 
                 //フィーバー用のゲージをリセット
@@ -252,7 +264,7 @@ public class InstructionDancer : MonoBehaviour
             //MatchDancerに踊らせその入力を取得
             danceResult = matchDancer.MatchingWithModelDance();
             //全て成功
-            if (danceResult == 1)
+            if (danceResult == 1||danceResult==2)
             {
                 SuccessDance();
             }
@@ -408,7 +420,15 @@ public class InstructionDancer : MonoBehaviour
         matchDancer.ResultDancing(danceResult);
 
         //結果を表示する時間
+        if(danceResult==1)
+        {
         StartCoroutine("IntervalResultDancing", IntervalResultDance);
+        }
+        //失敗、フィーバー成功時は長めにリザルトを表示する
+        else if(danceResult==-1||danceResult==2)
+        {
+        StartCoroutine("IntervalResultDancing", IntervalResultDanceLong);
+        }
     }
 
     /// <summary>
