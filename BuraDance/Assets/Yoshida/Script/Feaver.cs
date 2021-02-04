@@ -57,19 +57,19 @@ public class Feaver : MonoBehaviour
         }
 
         //振動しているように見せるため初期座標に補正させる
-        if (transform.position.x >= 0.01f)
+        if (transform.position.x >= 0.001f)
         {
             transform.position += new Vector3(-0.1f, 0, 0);
         }
-        if (transform.position.x <= -0.01f)
+        if (transform.position.x <= -0.001f)
         {
             transform.position += new Vector3(+0.1f, 0, 0);
         }
-        if (transform.position.y >= 0.01f)
+        if (transform.position.y >= 0.001f)
         {
             transform.position += new Vector3(0, -0.1f, 0);
         }
-        if (transform.position.y <= 0.01f)
+        if (transform.position.y <= 0.001f)
         {
             transform.position += new Vector3(0, 0.1f, 0);
         }
