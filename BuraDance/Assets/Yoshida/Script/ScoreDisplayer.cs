@@ -6,11 +6,6 @@ using UnityEngine.UI;
 public class ScoreDisplayer : MonoBehaviour
 {
     /// <summary>
-    /// スコア合計
-    /// </summary>
-    //int nowScoreSum;
-
-    /// <summary>
     /// displayerに表示させるスコア
     /// stackScore*100を足すとスコアの合計になる
     /// </summary>
@@ -46,14 +41,19 @@ public class ScoreDisplayer : MonoBehaviour
     /// </summary>
     FontScript texter;
 
+    /// <summary>
+    /// displayerを超えるスコアになったときリセットさせるアニメーション
+    /// </summary>
+    [SerializeField]
+    GameObject glowAnimationObject;
+
     private void Awake()
     {
-        texter = GetComponent<FontScript>();        
+        texter = GetComponent<FontScript>();
     }
 
     void Start()
     {
-        //nowScoreSum = 0;
         shortScore = 0;
         defaultScale = displayers[0].transform.localScale;
         foreach (ToDisplay displayer in displayers)
@@ -69,13 +69,15 @@ public class ScoreDisplayer : MonoBehaviour
     public void PlusScore(int _score)
     {
         shortScore += _score;
-        if(shortScore>= displayers .Length* 100)
+        if (shortScore >= displayers.Length * 100)
         {
             stackScore += displayers.Length;
             shortScore -= displayers.Length * 100;
-            foreach(ToDisplay displayer in displayers)
+            foreach (ToDisplay displayer in displayers)
             {
                 displayer.ResetScale();
+                glowAnimationObject.SetActive(false);
+                glowAnimationObject.SetActive(true);
             }
             texter.SetSpriteNumber(stackScore);
         }
@@ -89,8 +91,6 @@ public class ScoreDisplayer : MonoBehaviour
     {
         ///for文に使用するdisplayer用の引数
         int i = 0;
-
-        //int m = (int)(nowScoreSum / 100);
         //100で割り切れる分をdisplayerに表示する(340だった場合300分を表示するため3つのdisplayerを最大拡張に指示
         for (; i < (int)(shortScore / 100); i++)
         {
