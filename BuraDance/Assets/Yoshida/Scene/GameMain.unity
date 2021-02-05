@@ -1927,7 +1927,7 @@ MonoBehaviour:
   - {fileID: 21951108}
   matchDancer: {fileID: 1630608580}
   intervalStandUpDancers: 0.01
-  intervalFirstDance: 0
+  intervalFirstDance: 1.15
   IntervalInputLimit: 0.4
   IntervalLastDance: 0.08
   IntervalResultDance: 0.01

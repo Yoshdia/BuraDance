@@ -573,6 +573,10 @@ public class InstructionDancer : MonoBehaviour
         else
         {
             endDance = true;
+            foreach (var dancer in autoDancers)
+            {
+                dancer.InterruptStopDance();
+            }
             StartCoroutine("GameOverDance");
         }
         instructuioning = false;
