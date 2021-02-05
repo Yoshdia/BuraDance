@@ -190,6 +190,9 @@ public class InstructionDancer : MonoBehaviour
     [SerializeField]
     HitPointDisplayer hitPointDisplayer;
 
+    [SerializeField]
+    Cheers cheersAudience;
+
     /// <summary>
     /// ダンス・ゲーム本編の開始 このオブジェクトにアタッチされているAnimationから呼ばれる
     /// </summary>
@@ -212,6 +215,7 @@ public class InstructionDancer : MonoBehaviour
         feaversOwner = GetComponent<FeaversOwner>();
         scoreDisplayer = GetComponent<ScoreDisplayer>();
         animator = GetComponent<Animator>();
+        
     }
 
     private void Start()
@@ -219,6 +223,7 @@ public class InstructionDancer : MonoBehaviour
         hitPoint = HitPointMax;
         shortScoreGauge = 0;
         feaver = false;
+        cheersAudience.SetExciting(false);
         startedDance = false;
         audienceObject.SetActive(false);
         sakuraFeaver.SetActive(false);
@@ -251,6 +256,7 @@ public class InstructionDancer : MonoBehaviour
                     danceResult = 2;
                     audienceObject.SetActive(true);
                     sakuraFeaver.SetActive(true);
+                    cheersAudience.SetExciting(true);
                 }
                 else
                 {
@@ -258,6 +264,7 @@ public class InstructionDancer : MonoBehaviour
                     danceResult = -1;
                     audienceObject.SetActive(false);
                     sakuraFeaver.SetActive(false);
+                    cheersAudience.SetExciting(false);
                 }
 
                 //フィーバー用のゲージをリセット
