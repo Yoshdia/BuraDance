@@ -199,6 +199,8 @@ public class InstructionDancer : MonoBehaviour
     [SerializeField]
     Cheers cheersAudience;
 
+    Phrase nowPhrase;
+
     /// <summary>
     /// ダンス・ゲーム本編の開始 このオブジェクトにアタッチされているAnimationから呼ばれる
     /// </summary>
@@ -221,7 +223,7 @@ public class InstructionDancer : MonoBehaviour
         feaversOwner = GetComponent<FeaversOwner>();
         scoreDisplayer = GetComponent<ScoreDisplayer>();
         animator = GetComponent<Animator>();
-        
+
     }
 
     private void Start()
@@ -235,6 +237,7 @@ public class InstructionDancer : MonoBehaviour
         sakuraFeaver.SetActive(false);
         //フレームレート固定
         Application.targetFrameRate = 20;
+        instructuioning = false;
     }
 
     private void Update()
@@ -313,6 +316,11 @@ public class InstructionDancer : MonoBehaviour
         }
         else
         {
+            if(instructuioning)
+            {
+
+            InstructionDancers();
+            }
             if (!intervalLastDancing && !intervalResultDancing)
             {
                 //お手本が終了していないときに入力すると失敗になる
@@ -359,7 +367,12 @@ public class InstructionDancer : MonoBehaviour
         StopCoroutine("UseDancers");
 
         //踊らせる
-        StartCoroutine("UseDancers", onePhrase);
+        //StartCoroutine("UseDancers", onePhrase);
+        dancerInterval = (float)onePhrase.phraseTime * (float)onePhrase.stepCount;
+        framet = dancerInterval;
+        dancerNumber = 0;
+        nowPhrase = onePhrase;
+        instructuioning = true;
     }
 
     /// <summary>
@@ -403,6 +416,48 @@ public class InstructionDancer : MonoBehaviour
         endAutoDance = true;
         StartCoroutine("IntervalInputLimiter", IntervalInputLimit);
         Debug.Log("DanceEnd");
+    }
+
+    /// <summary>
+    /// ダンサー同士の間隔
+    /// </summary>
+    float dancerInterval;
+
+    float framet;
+
+    int dancerNumber;
+
+    bool instructuioning;
+
+    void InstructionDancers()
+    {
+        if (framet <= 0)
+        {
+            if (dancerNumber == autoDancers.Count )
+            {
+                matchDancer.RefreshPhrase(nowPhrase);
+                endAutoDance = true;
+                StartCoroutine("IntervalInputLimiter", IntervalInputLimit);
+                instructuioning = false;
+            }
+            else
+            {
+                var dancer = autoDancers[dancerNumber];
+                dancer.RestartPhrase(nowPhrase);
+                dancerNumber++;
+                framet = dancerInterval;
+                //if (dancerNumber == autoDancers.Count - 1)
+                //{
+                //    framet -= ((float)nowPhrase.phraseTime);
+                //}
+            }
+        }
+        else
+        {
+            framet -= 0.01f;
+            return;
+        }
+
     }
 
     /// <summary>
@@ -555,6 +610,7 @@ public class InstructionDancer : MonoBehaviour
             endDance = true;
             StartCoroutine("GameOverDance");
         }
+        instructuioning = false;
     }
 
     /// <summary>
