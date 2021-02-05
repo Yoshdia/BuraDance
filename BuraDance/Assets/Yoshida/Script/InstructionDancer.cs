@@ -187,9 +187,15 @@ public class InstructionDancer : MonoBehaviour
     [SerializeField]
     GameObject sakuraFeaver;
 
+    /// <summary>
+    /// 体力を表示する
+    /// </summary>
     [SerializeField]
     HitPointDisplayer hitPointDisplayer;
 
+    /// <summary>
+    /// 観客が送る声援
+    /// </summary>
     [SerializeField]
     Cheers cheersAudience;
 
