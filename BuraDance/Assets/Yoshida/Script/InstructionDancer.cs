@@ -57,13 +57,13 @@ public class InstructionDancer : MonoBehaviour
     /// ゲームが始まってからダンサー達が立ち上がるまでの時間
     /// </summary>
     [SerializeField]
-    float intervalStandUpDancers = 0.2f;
+    float intervalStandUpDancers = 0.01f;
 
     /// <summary>
     /// ダンサー達が立ち上がりIdleモーション後から最初のダンスまでのイントロ
     /// </summary>
     [SerializeField]
-    float intervalFirstDance = 1.0f;
+    float intervalFirstDance = 1.15f;
 
     /// <summary>
     /// お手本のダンスが終わった後入力を受け付ける時間
