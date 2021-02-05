@@ -187,12 +187,16 @@ public class InstructionDancer : MonoBehaviour
     [SerializeField]
     GameObject sakuraFeaver;
 
+    [SerializeField]
+    HitPointDisplayer hitPointDisplayer;
+
     /// <summary>
     /// ダンス・ゲーム本編の開始 このオブジェクトにアタッチされているAnimationから呼ばれる
     /// </summary>
     public void StartDance()
     {
         startedDance = true;
+        hitPointDisplayer.UpdateDisplay(hitPoint);
         //待機ダンス再生
         foreach (var dancer in autoDancers)
         {
@@ -207,7 +211,7 @@ public class InstructionDancer : MonoBehaviour
     {
         feaversOwner = GetComponent<FeaversOwner>();
         scoreDisplayer = GetComponent<ScoreDisplayer>();
-        animator = GetComponent<Animator>();        
+        animator = GetComponent<Animator>();
     }
 
     private void Start()
@@ -276,7 +280,7 @@ public class InstructionDancer : MonoBehaviour
             //MatchDancerに踊らせその入力を取得
             danceResult = matchDancer.MatchingWithModelDance();
             //全て成功
-            if (danceResult == 1||danceResult==2)
+            if (danceResult == 1 || danceResult == 2)
             {
                 SuccessDance();
             }
@@ -432,14 +436,14 @@ public class InstructionDancer : MonoBehaviour
         matchDancer.ResultDancing(danceResult);
 
         //結果を表示する時間
-        if(danceResult==1)
+        if (danceResult == 1)
         {
-        StartCoroutine("IntervalResultDancing", IntervalResultDance);
+            StartCoroutine("IntervalResultDancing", IntervalResultDance);
         }
         //失敗、フィーバー成功時は長めにリザルトを表示する
-        else if(danceResult==-1||danceResult==2)
+        else if (danceResult == -1 || danceResult == 2)
         {
-        StartCoroutine("IntervalResultDancing", IntervalResultDanceLong);
+            StartCoroutine("IntervalResultDancing", IntervalResultDanceLong);
         }
     }
 
@@ -521,6 +525,7 @@ public class InstructionDancer : MonoBehaviour
     {
         //残機を減らす
         hitPoint--;
+        hitPointDisplayer.UpdateDisplay(hitPoint);
         //ゲームオーバーか
         if (hitPoint > 0)
         {
@@ -585,7 +590,7 @@ public class InstructionDancer : MonoBehaviour
     IEnumerator ChangeSceneLoading()
     {
         int frame = 30;
-        while(frame>0)
+        while (frame > 0)
         {
             yield return null;
             frame--;
