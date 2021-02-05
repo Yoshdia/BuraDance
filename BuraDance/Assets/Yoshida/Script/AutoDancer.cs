@@ -44,74 +44,10 @@ public class AutoDancer : MonoBehaviour
     [SerializeField]
     AudioClip stepSoundClip;
 
+    /// <summary>
+    /// 現在のフレーズ
+    /// </summary>
     Phrase nowPhrase;
-
-    private void Awake()
-    {
-        animator = GetComponent<Animator>();
-        audioSource = GetComponent<AudioSource>();
-    }
-
-    /// <summary>
-    /// 受け取ったフレーズで踊る
-    /// </summary>
-    /// <param name="_phrase">フレーズ</param>
-    public void Dance(Phrase _phrase)
-    {
-        //StartCoroutine("AutoDance", _phrase);
-    }
-
-    /// <summary>
-    /// ステップをステップ間隔分待たせながらすべて再生させる
-    /// </summary>
-    /// <param name="_phrase">再生させるフレーム</param>
-    /// <returns></returns>
-    public IEnumerator AutoDance(Phrase _phrase)
-    {
-        //ステップの間隔
-        float stepInterval = (float)_phrase.phraseTime;
-
-        //ステップ情報を基にアニメーションさせる
-        foreach (var step in _phrase.stepTable)
-        {
-            //左
-            if (step == StepDirection.LeftStep)
-            {
-                Debug.Log("Left", this.gameObject);
-
-                animator.SetTrigger("LeftDance");
-                //左方向にステップエフェクトを再生しこのオブジェクトの親を親にする
-                GameObject bura = Instantiate(throwLeftObject, throwLeftPosition.position, Quaternion.identity);
-                bura.transform.SetParent(this.transform);
-                //サウンド再生
-                audioSource.PlayOneShot(stepSoundClip);
-            }
-            //右
-            else if (step == StepDirection.RightStep)
-            {
-                Debug.Log("Right");
-
-                animator.SetTrigger("RightDance");
-                //右方向にステップエフェクトを再生しこのオブジェクトの親を親にする
-                GameObject bura = Instantiate(throwRightObject, throwRightPosition.position, Quaternion.identity);
-                bura.transform.SetParent(this.transform);
-                //サウンド再生
-                audioSource.PlayOneShot(stepSoundClip);
-            }
-            //ステップの間隔を待つループ
-            while (stepInterval > 0)
-            {
-                // frameで指定したフレームだけループ
-                yield return null;
-                stepInterval -= 0.01f;
-            }
-            //次のステップがある。終わりでないとき次のステップまでphraseTime待機させる
-            if (step != StepDirection.NoStep)
-            {
-                stepInterval = (float)_phrase.phraseTime;
-            }
-        }
-    }
 
     /// <summary>
     /// ダンス中
@@ -123,8 +59,28 @@ public class AutoDancer : MonoBehaviour
     /// </summary>
     int stepNumber;
 
+    /// <summary>
+    /// ステップの間隔
+    /// </summary>
+    float stepInterval;
+
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
+    }
+
+    private void Start()
+    {
+        dancing = false;
+        stepNumber = 0;
+        stepInterval = 0;
+        nowPhrase = new Phrase();
+    }
+
     private void Update()
     {
+        //ダンス中
         if (dancing)
         {
             AutoStep();
@@ -139,8 +95,8 @@ public class AutoDancer : MonoBehaviour
     {
         dancing = true;
         nowPhrase = _phrase;
-        interval = nowPhrase.phraseTime;
         stepNumber = 0;
+        stepInterval = nowPhrase.phraseTime;
     }
 
     /// <summary>
@@ -152,27 +108,18 @@ public class AutoDancer : MonoBehaviour
     }
 
     /// <summary>
-    /// ステップの間隔
-    /// </summary>
-    float interval = 0;
-
-    /// <summary>
     /// ステップをステップ間隔分待たせながらすべて再生させる
     /// </summary>
     void AutoStep()
     {
         //カウント終了
-        if (interval <= 0)
+        if (stepInterval <= 0)
         {
             //ステップ情報を基にアニメーションさせる
             var step = nowPhrase.stepTable[stepNumber];
-            stepNumber++;
-
             //左
             if (step == StepDirection.LeftStep)
             {
-                Debug.Log("Left", this.gameObject);
-
                 animator.SetTrigger("LeftDance");
                 //左方向にステップエフェクトを再生しこのオブジェクトの親を親にする
                 GameObject bura = Instantiate(throwLeftObject, throwLeftPosition.position, Quaternion.identity);
@@ -183,8 +130,6 @@ public class AutoDancer : MonoBehaviour
             //右
             else if (step == StepDirection.RightStep)
             {
-                Debug.Log("Right");
-
                 animator.SetTrigger("RightDance");
                 //右方向にステップエフェクトを再生しこのオブジェクトの親を親にする
                 GameObject bura = Instantiate(throwRightObject, throwRightPosition.position, Quaternion.identity);
@@ -196,12 +141,18 @@ public class AutoDancer : MonoBehaviour
             //次のステップがある。終わりでないとき次のステップまでphraseTime待機させる
             if (step != StepDirection.NoStep)
             {
-                interval = nowPhrase.phraseTime;
+                stepInterval = nowPhrase.phraseTime;
             }
+            else
+            {
+                dancing = false;
+            }
+            //次のステップへ
+            stepNumber++;
         }
         else
         {
-            interval -= 0.01f;
+            stepInterval -= 0.01f;
             return;
         }
     }
@@ -215,12 +166,12 @@ public class AutoDancer : MonoBehaviour
         if (_result == 1 || _result == 2)
         {
             animator.SetTrigger("Happy");
-            StopCoroutine("AutoDance");
+            dancing = false;
         }
         else if (_result == -1)
         {
             animator.SetTrigger("Missed");
-            StopCoroutine("AutoDance");
+            dancing = false;
         }
     }
 

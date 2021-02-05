@@ -69,7 +69,7 @@ public struct Phrase
             }
         }
         stepTable.Add(StepDirection.NoStep);
-        Debug.Log(stepTable.Count-1);
+        //Debug.Log(stepTable.Count-1);
     }
 
 }
