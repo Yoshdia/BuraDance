@@ -1921,7 +1921,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stepCountMax: 3
+  stepCountMaxLimit: 5
   intervalStep: 0.08
+  intervalStepMinLimit: 0.055
+  intervalStepBate: 0.005
   autoDancers:
   - {fileID: 1617859036}
   - {fileID: 21951108}
@@ -1937,7 +1940,7 @@ MonoBehaviour:
   IntervalGameOverFall: 0.12
   hitPoint: 0
   HitPointMax: 3
-  ShortScoreMax: 8
+  ShortScoreMax: 1
   sceneTransitioner: {fileID: 1129335020}
   audienceObject: {fileID: 2005380488}
   sakuraFeaver: {fileID: 2115243454}

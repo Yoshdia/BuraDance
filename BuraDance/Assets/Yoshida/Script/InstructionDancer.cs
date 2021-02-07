@@ -22,13 +22,31 @@ public class InstructionDancer : MonoBehaviour
     /// ステップの最大数、増加する
     /// </summary>
     [SerializeField]
-    private int stepCountMax = 3;
+    int stepCountMax = 3;
+
+    /// <summary>
+    /// ステップの最大数の増加限界
+    /// </summary>
+    [SerializeField]
+    int stepCountMaxLimit = 5;
 
     /// <summary>
     /// フレーズの最短時間
     /// </summary>
     [SerializeField]
     float intervalStep = 0.08f;
+
+    /// <summary>
+    /// フレーズの最短時間の減少限界　0.055以下はアニメーションとかがスキップされる
+    /// </summary>
+    [SerializeField]
+    float intervalStepMinLimit = 0.055f;
+
+    /// <summary>
+    /// 1フィーバーの度に減少する最短時間
+    /// </summary>
+    [SerializeField]
+    float intervalStepBate = 0.005f;
 
     /// <summary>
     /// Phraseの情報に合わせお手本として踊るダンサー達
@@ -291,6 +309,21 @@ public class InstructionDancer : MonoBehaviour
                     audienceObject.SetActive(true);
                     sakuraFeaver.SetActive(true);
                     cheersAudience.SetExciting(true);
+                    //難易度をあげる
+                    if (intervalStep >= intervalStepMinLimit)
+                    {
+                        intervalStep -= intervalStepBate;
+                        //intervalStepが一定以上減少したら最大ステップ数を4にする
+                        if (intervalStep - intervalStepMinLimit< 0.02f)
+                        {
+                            stepCountMax = 4;
+                        }
+                    }
+                    else
+                    {
+                        intervalStep = intervalStepMinLimit;
+                        stepCountMax = stepCountMaxLimit;
+                    }
                 }
                 else
                 {
@@ -391,7 +424,7 @@ public class InstructionDancer : MonoBehaviour
         endAutoDance = false;
 
         //踊らせる 定数倍率a*(ステップ数+(ステップ数*定数倍率b))
-        dancerInterval = (float)onePhrase.phraseTime * ((float)onePhrase.stepCount+ ((float)onePhrase.stepCount*0.1f));
+        dancerInterval = (float)onePhrase.phraseTime * ((float)onePhrase.stepCount + ((float)onePhrase.stepCount * 0.1f));
         interval = dancerInterval;
         dancerNumber = 0;
         nowPhrase = onePhrase;
@@ -414,7 +447,7 @@ public class InstructionDancer : MonoBehaviour
                 //プレイヤーのダンスを許可
                 endAutoDance = true;
                 //入力の時間制限を開始
-                StartCoroutine("IntervalInputLimiter", IntervalInputLimit*nowPhrase.stepCount);
+                StartCoroutine("IntervalInputLimiter", IntervalInputLimit * nowPhrase.stepCount);
                 //指示を終了
                 instructuioning = false;
             }
