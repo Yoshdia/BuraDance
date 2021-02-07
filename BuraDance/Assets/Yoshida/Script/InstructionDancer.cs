@@ -269,7 +269,7 @@ public class InstructionDancer : MonoBehaviour
     {
         //すべての処理が始まっているか。終わっていないか。外部からStartDanceを呼ばれるとこのフラグが建つ
         if (!startedDance
-            && !endDance)
+            || endDance)
         {
             return;
         }
@@ -346,7 +346,7 @@ public class InstructionDancer : MonoBehaviour
                 InstructionDancers();
             }
             //結果が出る最後のステップ中と結果中、イントロ中は入力させない
-            if (!intervalLastDancing && !intervalResultDancing&& !timeInIntro)
+            if (!intervalLastDancing && !intervalResultDancing && !timeInIntro)
             {
                 //お手本が終了していないときに入力すると失敗になる
                 bool noFlag = false;
@@ -634,19 +634,30 @@ public class InstructionDancer : MonoBehaviour
         //倒れはじめ
         matchDancer.GameOverDance();
         //プレイヤー側から倒れる必要があるためリストの要素を反転
-        autoDancers.Reverse();
+        //autoDancers.Reverse();
 
-        //IntervalGameOverFall待機して倒れていく
-        foreach (var dancer in autoDancers)
+        for (int i = autoDancers.Count - 1; i >= 0; i--)
         {
             while (frame > 0)
             {
                 yield return null;
                 frame -= 0.01f;
             }
-            dancer.GameOverDance();
+            autoDancers[i].GameOverDance();
             frame = IntervalGameOverFall;
         }
+
+        ////IntervalGameOverFall待機して倒れていく
+        //foreach (var dancer in autoDancers)
+        //{
+        //    while (frame > 0)
+        //    {
+        //        yield return null;
+        //        frame -= 0.01f;
+        //    }
+        //    dancer.GameOverDance();
+        //    frame = IntervalGameOverFall;
+        //}
         animator.SetTrigger("Close");
         StartCoroutine("ChangeSceneLoading");
         sceneTransitioner.SetScore(scoreDisplayer.GetScore());
