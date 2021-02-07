@@ -583,6 +583,10 @@ public class InstructionDancer : MonoBehaviour
         //残機を減らす
         hitPoint--;
         hitPointDisplayer.UpdateDisplay(hitPoint);
+        StopCoroutine("IntervalLastDancing");
+        StopCoroutine("IntervalResultDancing");
+        StopCoroutine("IntervalRestartDancing");
+
         //ゲームオーバーか
         if (hitPoint > 0)
         {
