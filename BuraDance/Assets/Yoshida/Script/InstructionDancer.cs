@@ -221,6 +221,11 @@ public class InstructionDancer : MonoBehaviour
     bool instructuioning;
 
     /// <summary>
+    /// イントロ中か　イントロ中の入力を制限する
+    /// </summary>
+    bool timeInIntro;
+
+    /// <summary>
     /// ダンス・ゲーム本編の開始 このオブジェクトにアタッチされているAnimationから呼ばれる
     /// </summary>
     public void StartDance()
@@ -254,6 +259,7 @@ public class InstructionDancer : MonoBehaviour
         startedDance = false;
         audienceObject.SetActive(false);
         sakuraFeaver.SetActive(false);
+        timeInIntro = true;
         //フレームレート固定
         Application.targetFrameRate = 20;
         instructuioning = false;
@@ -322,13 +328,13 @@ public class InstructionDancer : MonoBehaviour
             //失敗
             else if (danceResult == -1)
             {
-                //Debug.Log("normalMiss");
+                Debug.Log("normalMiss");
                 FailDance();
             }
             //時間切れ　失敗
             else if (intervalInputLimit)
             {
-                //Debug.Log("timeOverMiss");
+                Debug.Log("timeOverMiss");
                 danceResult = -1;
                 FailDance();
             }
@@ -339,14 +345,15 @@ public class InstructionDancer : MonoBehaviour
             {
                 InstructionDancers();
             }
-            if (!intervalLastDancing && !intervalResultDancing)
+            //結果が出る最後のステップ中と結果中、イントロ中は入力させない
+            if (!intervalLastDancing && !intervalResultDancing&& !timeInIntro)
             {
                 //お手本が終了していないときに入力すると失敗になる
                 bool noFlag = false;
                 matchDancer.InputDance(ref noFlag);
                 if (noFlag)
                 {
-                    //Debug.Log("soFastMiss");
+                    Debug.Log("soFastMiss");
                     danceResult = -1;
                     FailDance();
                 }
@@ -370,9 +377,9 @@ public class InstructionDancer : MonoBehaviour
     /// </summary>
     public void Instruction()
     {
+        timeInIntro = false;
         //フレーズ生成
         Phrase onePhrase = CreatePhrase();
-
         //踊らせる相手がゼロではないか
         if (autoDancers.Count < 1)
         {
@@ -389,7 +396,7 @@ public class InstructionDancer : MonoBehaviour
         dancerNumber = 0;
         nowPhrase = onePhrase;
         instructuioning = true;
-        Debug.Log("Error");
+
     }
 
     /// <summary>
@@ -454,6 +461,7 @@ public class InstructionDancer : MonoBehaviour
     /// <returns></returns>
     IEnumerator IntervalLastDancing(float _interval)
     {
+        Debug.Log("LastDanceing");
         //増減する待機用変数
         float interval = _interval;
         intervalLastDancing = true;
@@ -471,6 +479,7 @@ public class InstructionDancer : MonoBehaviour
         }
         matchDancer.ResultDancing(danceResult);
 
+        Debug.Log("LastDanced");
         //結果を表示する時間
         if (danceResult == 1)
         {
@@ -491,6 +500,7 @@ public class InstructionDancer : MonoBehaviour
     /// <returns></returns>
     IEnumerator IntervalResultDancing(float _interval)
     {
+        Debug.Log("Resulting");
         //増減する待機用変数
         float interval = _interval;
         intervalResultDancing = true;
@@ -506,6 +516,8 @@ public class InstructionDancer : MonoBehaviour
             dancer.RestartDance();
         }
         matchDancer.RestartDance();
+
+        Debug.Log("Resulted");
         //shortScoreGaugeが一定以上なら特殊演出、そうでないなら通常通り繰り返す
         if (shortScoreGauge >= ShortScoreMax)
         {
@@ -518,6 +530,7 @@ public class InstructionDancer : MonoBehaviour
             StartCoroutine("IntervalRestartDancing", IntervalRestartDance);
 
         }
+
     }
 
     /// <summary>
@@ -527,6 +540,7 @@ public class InstructionDancer : MonoBehaviour
     /// <returns></returns>
     IEnumerator IntervalRestartDancing(float _interval)
     {
+        Debug.Log("ReStart Creating");
         //増減する待機用変数
         float interval = _interval;
         while (interval > 0)
@@ -535,8 +549,17 @@ public class InstructionDancer : MonoBehaviour
             interval -= 0.01f;
         }
 
-        //フレーズ生成
-        Instruction();
+        if (!intervalLastDancing && !intervalResultDancing)
+        {
+            Debug.Log("Restart Created");
+            //フレーズ生成
+            Instruction();
+
+        }
+        else
+        {
+            Debug.Log("Restart Canceled");
+        }
     }
 
     /// <summary>
