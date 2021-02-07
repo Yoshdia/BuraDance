@@ -1921,7 +1921,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stepCountMax: 3
-  stepCountMaxLimit: 5
   intervalStep: 0.08
   intervalStepMinLimit: 0.055
   intervalStepBate: 0.005
@@ -1930,7 +1929,7 @@ MonoBehaviour:
   - {fileID: 21951108}
   matchDancer: {fileID: 1630608580}
   intervalStandUpDancers: 0.01
-  intervalFirstDance: 1.15
+  intervalFirstDance: 0.87
   IntervalInputLimit: 0.2
   IntervalLastDance: 0.08
   IntervalResultDance: 0.01
@@ -1940,7 +1939,7 @@ MonoBehaviour:
   IntervalGameOverFall: 0.12
   hitPoint: 0
   HitPointMax: 3
-  ShortScoreMax: 1
+  ShortScoreMax: 8
   sceneTransitioner: {fileID: 1129335020}
   audienceObject: {fileID: 2005380488}
   sakuraFeaver: {fileID: 2115243454}
@@ -4056,7 +4055,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1202675990}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: efb127fcf2173ac42b078be66157993f, type: 3}

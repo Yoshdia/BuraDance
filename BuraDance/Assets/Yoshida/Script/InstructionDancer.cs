@@ -25,12 +25,6 @@ public class InstructionDancer : MonoBehaviour
     int stepCountMax = 3;
 
     /// <summary>
-    /// ステップの最大数の増加限界
-    /// </summary>
-    [SerializeField]
-    int stepCountMaxLimit = 5;
-
-    /// <summary>
     /// フレーズの最短時間
     /// </summary>
     [SerializeField]
@@ -310,11 +304,11 @@ public class InstructionDancer : MonoBehaviour
                     sakuraFeaver.SetActive(true);
                     cheersAudience.SetExciting(true);
                     //難易度をあげる
-                    if (intervalStep >= intervalStepMinLimit)
+                    if (intervalStep > intervalStepMinLimit)
                     {
                         intervalStep -= intervalStepBate;
                         //intervalStepが一定以上減少したら最大ステップ数を4にする
-                        if (intervalStep - intervalStepMinLimit< 0.02f)
+                        if (intervalStep - intervalStepMinLimit < 0.02f)
                         {
                             stepCountMax = 4;
                         }
@@ -322,7 +316,7 @@ public class InstructionDancer : MonoBehaviour
                     else
                     {
                         intervalStep = intervalStepMinLimit;
-                        stepCountMax = stepCountMaxLimit;
+                        stepCountMax++;
                     }
                 }
                 else
