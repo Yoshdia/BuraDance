@@ -70,7 +70,7 @@ public class InstructionDancer : MonoBehaviour
     /// 0になると失敗になる
     /// </summary>
     [SerializeField]
-    float IntervalInputLimit = 0.4f;
+    float IntervalInputLimit = 0.2f;
 
     /// <summary>
     /// フレーズを終わらせるときに建つフラグ
@@ -390,8 +390,8 @@ public class InstructionDancer : MonoBehaviour
         //前回までのダンスを終わらせる
         endAutoDance = false;
 
-        //踊らせる
-        dancerInterval = (float)onePhrase.phraseTime * (float)onePhrase.stepCount;
+        //踊らせる 定数倍率a*(ステップ数+(ステップ数*定数倍率b))
+        dancerInterval = (float)onePhrase.phraseTime * ((float)onePhrase.stepCount+ ((float)onePhrase.stepCount*0.1f));
         interval = dancerInterval;
         dancerNumber = 0;
         nowPhrase = onePhrase;
@@ -414,7 +414,7 @@ public class InstructionDancer : MonoBehaviour
                 //プレイヤーのダンスを許可
                 endAutoDance = true;
                 //入力の時間制限を開始
-                StartCoroutine("IntervalInputLimiter", IntervalInputLimit);
+                StartCoroutine("IntervalInputLimiter", IntervalInputLimit*nowPhrase.stepCount);
                 //指示を終了
                 instructuioning = false;
             }
@@ -647,17 +647,6 @@ public class InstructionDancer : MonoBehaviour
             frame = IntervalGameOverFall;
         }
 
-        ////IntervalGameOverFall待機して倒れていく
-        //foreach (var dancer in autoDancers)
-        //{
-        //    while (frame > 0)
-        //    {
-        //        yield return null;
-        //        frame -= 0.01f;
-        //    }
-        //    dancer.GameOverDance();
-        //    frame = IntervalGameOverFall;
-        //}
         animator.SetTrigger("Close");
         StartCoroutine("ChangeSceneLoading");
         sceneTransitioner.SetScore(scoreDisplayer.GetScore());

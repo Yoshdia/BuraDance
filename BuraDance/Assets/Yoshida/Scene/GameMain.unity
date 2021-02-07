@@ -333,7 +333,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 13.428589}
+  m_AnchoredPosition: {x: 0, y: 13.4285965}
   m_SizeDelta: {x: 10.800001, y: 12.802324}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &21951111
@@ -1928,7 +1928,7 @@ MonoBehaviour:
   matchDancer: {fileID: 1630608580}
   intervalStandUpDancers: 0.01
   intervalFirstDance: 1.15
-  IntervalInputLimit: 0.4
+  IntervalInputLimit: 0.2
   IntervalLastDance: 0.08
   IntervalResultDance: 0.01
   IntervalResultDanceLong: 0.12
@@ -4970,7 +4970,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 13.428589}
+  m_AnchoredPosition: {x: 0, y: 13.4285965}
   m_SizeDelta: {x: 10.800001, y: 12.802324}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1617859038
@@ -5334,7 +5334,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 13.428589}
+  m_AnchoredPosition: {x: 0, y: 13.4285965}
   m_SizeDelta: {x: 10.800001, y: 12.802324}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1630608583
