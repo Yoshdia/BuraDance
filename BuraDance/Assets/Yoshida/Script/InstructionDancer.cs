@@ -448,7 +448,7 @@ public class InstructionDancer : MonoBehaviour
         endAutoDance = false;
 
         //踊らせる 定数倍率a*(ステップ数+(ステップ数*定数倍率b))
-        dancerInterval = (float)onePhrase.phraseTime * ((float)onePhrase.stepCount + ((float)onePhrase.stepCount * 0.1f));
+        dancerInterval = (float)onePhrase.phraseTime * ((float)onePhrase.stepCount + ((float)onePhrase.stepCount * 0.08f));
         interval = dancerInterval;
         dancerNumber = 0;
         nowPhrase = onePhrase;
@@ -627,7 +627,7 @@ public class InstructionDancer : MonoBehaviour
     {
         CommonEndDance();
         Debug.Log("Dance Clear!");
-        scoreDisplayer.PlusScore(successPlusScore);
+        scoreDisplayer.PlusScore(successPlusScore*nowPhrase.stepCount);
         shortScoreGauge++;
         audioSource.PlayOneShot(applauseSound);
 

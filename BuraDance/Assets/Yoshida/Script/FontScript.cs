@@ -20,7 +20,7 @@ public class FontScript : MonoBehaviour
     {
         unit.SetActive(false);
         beforeScore = 0;
-        defaultPosition = new Vector3(6.2f, 1.7f, 100);
+        defaultPosition = new Vector3(5.6f, 1.7f, 100);
     }
     void Update()
     {

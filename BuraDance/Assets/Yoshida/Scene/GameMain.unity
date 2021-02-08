@@ -1778,7 +1778,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -107, y: 223}
+  m_AnchoredPosition: {x: -146, y: 223}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &348355165
@@ -1940,7 +1940,7 @@ MonoBehaviour:
   IntervalGameOverFall: 0.12
   hitPoint: 0
   HitPointMax: 3
-  ShortScoreMax: 8
+  ShortScoreMax: 6
   sceneTransitioner: {fileID: 1129335020}
   audienceObject: {fileID: 2005380488}
   sakuraFeaver: {fileID: 2115243454}
@@ -5101,7 +5101,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: b2a049034b0c26542927b4404e722840, type: 3}
+  m_Sprite: {fileID: 21300000, guid: da09fe7550b69c247aa96a4cf9dbc896, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

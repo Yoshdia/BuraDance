@@ -30,12 +30,12 @@ public class Cheers : MonoBehaviour
     float intervalVoice;
 
     [SerializeField]
-    float IntervalVoice = 8;
+    float IntervalVoice = 24;
 
     private void Start()
     {
         exciting = false;
-        intervalVoice = IntervalVoice;
+        intervalVoice = IntervalVoice + Time.time;
     }
 
     // Update is called once per frame
@@ -56,7 +56,7 @@ public class Cheers : MonoBehaviour
                 }
             }
             //乱数+定数で間隔を更新する
-            intervalVoice = Time.time + Random.Range(0, 3) + (IntervalVoice - minus);
+            intervalVoice = Time.time + Random.Range(0, 4) + (IntervalVoice - minus);
             CreateCheersVoice();
         }
     }
