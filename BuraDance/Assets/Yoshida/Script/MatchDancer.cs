@@ -165,4 +165,13 @@ public class MatchDancer : MonoBehaviour
     {
         animator.SetTrigger("OverDance");
     }
+
+    /// <summary>
+    /// フィーバー中のダンス
+    /// </summary>
+    /// <param name="_frag"></param>
+    public void SetFeaverDance(bool _frag)
+    {
+        animator.SetBool("FeaverDance", _frag);
+    }
 }

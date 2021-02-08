@@ -238,6 +238,24 @@ public class InstructionDancer : MonoBehaviour
     bool timeInIntro;
 
     /// <summary>
+    /// オーディオソース
+    /// </summary>
+    AudioSource audioSource;
+
+    [SerializeField]
+    /// <summary>
+    /// 成功の度に鳴る拍手
+    /// </summary>
+    AudioClip applauseSound;
+
+    [SerializeField]
+    /// <summary>
+    /// フィーバー成功時に鳴る歓声
+    /// </summary>
+    AudioClip cheersSound;
+
+
+    /// <summary>
     /// ダンス・ゲーム本編の開始 このオブジェクトにアタッチされているAnimationから呼ばれる
     /// </summary>
     public void StartDance()
@@ -259,6 +277,7 @@ public class InstructionDancer : MonoBehaviour
         feaversOwner = GetComponent<FeaversOwner>();
         scoreDisplayer = GetComponent<ScoreDisplayer>();
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
 
     }
 
@@ -289,6 +308,11 @@ public class InstructionDancer : MonoBehaviour
         //フィーバー中は処理を停止し結果を待つ
         if (feaver)
         {
+            foreach(var dancer in autoDancers)
+            {
+                dancer.SetFeaverDance(true);
+            }
+            matchDancer.SetFeaverDance(true);
             if (feaversOwner.EndFeavers())
             {
                 //フィーバーのスコア
@@ -303,6 +327,7 @@ public class InstructionDancer : MonoBehaviour
                     audienceObject.SetActive(true);
                     sakuraFeaver.SetActive(true);
                     cheersAudience.SetExciting(true);
+                    audioSource.PlayOneShot(cheersSound);
                     //難易度をあげる
                     if (intervalStep > intervalStepMinLimit)
                     {
@@ -332,6 +357,11 @@ public class InstructionDancer : MonoBehaviour
                 shortScoreGauge = 0;
                 //停止
                 feaver = false;
+                foreach (var dancer in autoDancers)
+                {
+                    dancer.SetFeaverDance(false);
+                }
+                matchDancer.SetFeaverDance(false);
 
                 //結果の処理へ
                 StartCoroutine("IntervalLastDancing", 0);
@@ -550,6 +580,7 @@ public class InstructionDancer : MonoBehaviour
         {
             feaver = true;
             feaversOwner.ActiveFeaver();
+
         }
         else
         {
@@ -598,7 +629,7 @@ public class InstructionDancer : MonoBehaviour
         Debug.Log("Dance Clear!");
         scoreDisplayer.PlusScore(successPlusScore);
         shortScoreGauge++;
-
+        audioSource.PlayOneShot(applauseSound);
 
     }
 

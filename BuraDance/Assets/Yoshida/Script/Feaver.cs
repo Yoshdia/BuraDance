@@ -30,10 +30,34 @@ public class Feaver : MonoBehaviour
     [SerializeField]
     Transform rendaFeaversParent;
 
+    /// <summary>
+    /// オーディオソース
+    /// </summary>
+    AudioSource audioSource;
+
+    /// <summary>
+    /// このフィーバーが発生したときに鳴る音
+    /// </summary>
+    [SerializeField]
+    AudioClip cutInSound;
+
+    /// <summary>
+    /// オーディオソース
+    /// </summary>
+    [SerializeField]
+    AudioClip tapSound;
+
+
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+
     private void OnEnable()
     {
         lifeCount = 0;
         feaversScore = 0;
+        audioSource.PlayOneShot(cutInSound);
     }
 
     // Update is called once per frame
@@ -54,6 +78,7 @@ public class Feaver : MonoBehaviour
             //エフェクトを再生
             GameObject efftct=Instantiate(RendaEffect,transform);
             efftct.transform.SetParent(rendaFeaversParent);
+            audioSource.PlayOneShot(tapSound);
         }
 
         //振動しているように見せるため初期座標に補正させる

@@ -30,6 +30,7 @@ public class FeaversOwner : MonoBehaviour
 
 
 
+
     /// <summary>
     /// FeaverEffects、feaversオブジェクトを全て非アクティブに
     /// </summary>
