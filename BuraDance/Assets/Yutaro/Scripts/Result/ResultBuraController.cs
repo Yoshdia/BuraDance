@@ -6,6 +6,8 @@ public class ResultBuraController : MonoBehaviour
 {
     [SerializeField]
     Animator m_buraAnim;
+    [SerializeField]
+    GameObject m_flowerObj;    // 花吹雪オブジェクト
 
     // Start is called before the first frame update
     void Start()
@@ -41,6 +43,7 @@ public class ResultBuraController : MonoBehaviour
     public void BuraAnimationGreat()
     {
         m_buraAnim.SetBool("Great", true);
+        m_flowerObj.SetActive(true);
     }
 
 }
