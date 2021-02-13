@@ -24,6 +24,9 @@ public class InstructionDancer : MonoBehaviour
     [SerializeField]
     int stepCountMax = 3;
 
+    [SerializeField]
+    int stepCountMin = 1;
+
     /// <summary>
     /// フレーズの最短時間
     /// </summary>
@@ -308,7 +311,7 @@ public class InstructionDancer : MonoBehaviour
         //フィーバー中は処理を停止し結果を待つ
         if (feaver)
         {
-            foreach(var dancer in autoDancers)
+            foreach (var dancer in autoDancers)
             {
                 dancer.SetFeaverDance(true);
             }
@@ -336,11 +339,13 @@ public class InstructionDancer : MonoBehaviour
                         if (intervalStep - intervalStepMinLimit < 0.02f)
                         {
                             stepCountMax = 4;
+                            stepCountMin = 2;
                         }
                     }
                     else
                     {
                         intervalStep = intervalStepMinLimit;
+                        stepCountMin++;
                         stepCountMax++;
                     }
                 }
@@ -425,7 +430,7 @@ public class InstructionDancer : MonoBehaviour
     Phrase CreatePhrase()
     {
         //定められた定数の範囲の乱数でこのフレーズのステップ数とステップ時間を決定
-        int stepCount = Random.Range(1, stepCountMax + 1);
+        int stepCount = Random.Range(stepCountMin, stepCountMax + 1);
         return new Phrase(stepCount, intervalStep);
     }
 
@@ -627,7 +632,7 @@ public class InstructionDancer : MonoBehaviour
     {
         CommonEndDance();
         Debug.Log("Dance Clear!");
-        scoreDisplayer.PlusScore(successPlusScore*nowPhrase.stepCount);
+        scoreDisplayer.PlusScore(successPlusScore * nowPhrase.stepCount);
         shortScoreGauge++;
         audioSource.PlayOneShot(applauseSound);
 
@@ -687,7 +692,7 @@ public class InstructionDancer : MonoBehaviour
     /// <returns></returns>
     IEnumerator GameOverDance()
     {
-        float frame = IntervalGameOverFall;
+        float frame = 0.1f;
 
         //倒れはじめ
         matchDancer.GameOverDance();
@@ -702,9 +707,8 @@ public class InstructionDancer : MonoBehaviour
                 frame -= 0.01f;
             }
             autoDancers[i].GameOverDance();
-            frame = IntervalGameOverFall;
+            frame = 0.1f;
         }
-
         animator.SetTrigger("Close");
         StartCoroutine("ChangeSceneLoading");
         sceneTransitioner.SetScore(scoreDisplayer.GetScore());
@@ -716,11 +720,11 @@ public class InstructionDancer : MonoBehaviour
     /// <returns></returns>
     IEnumerator ChangeSceneLoading()
     {
-        int frame = 30;
+        float frame = IntervalGameOverFall;
         while (frame > 0)
         {
             yield return null;
-            frame--;
+            frame -= 0.01f;
         }
         sceneTransitioner.ChangeScene();
     }
