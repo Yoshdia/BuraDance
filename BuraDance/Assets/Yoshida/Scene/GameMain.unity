@@ -1491,7 +1491,7 @@ PrefabInstance:
     - target: {fileID: 8763927998860217161, guid: 42582a8d8f6812e479c1868011a95926,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 348.49997
+      value: 348.5
       objectReference: {fileID: 0}
     - target: {fileID: 8763927998860217161, guid: 42582a8d8f6812e479c1868011a95926,
         type: 3}
@@ -1939,7 +1939,7 @@ MonoBehaviour:
   successPlusScore: 100
   IntervalGameOverFall: 0.12
   hitPoint: 0
-  HitPointMax: 3
+  HitPointMax: 2
   ShortScoreMax: 6
   sceneTransitioner: {fileID: 1129335020}
   audienceObject: {fileID: 2005380488}
@@ -6044,7 +6044,7 @@ PrefabInstance:
     - target: {fileID: 8763927998860217161, guid: 42582a8d8f6812e479c1868011a95926,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 281.4
+      value: 281.40002
       objectReference: {fileID: 0}
     - target: {fileID: 8763927998860217161, guid: 42582a8d8f6812e479c1868011a95926,
         type: 3}
@@ -7251,7 +7251,7 @@ PrefabInstance:
     - target: {fileID: 8763927998860217161, guid: 42582a8d8f6812e479c1868011a95926,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 75.49999
+      value: 75.5
       objectReference: {fileID: 0}
     - target: {fileID: 8763927998860217161, guid: 42582a8d8f6812e479c1868011a95926,
         type: 3}

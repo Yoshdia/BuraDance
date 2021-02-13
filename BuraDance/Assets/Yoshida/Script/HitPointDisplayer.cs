@@ -29,10 +29,6 @@ public class HitPointDisplayer : MonoBehaviour
             {
                 lifeImage = lifeImages[0];
             }
-            else if (_hitPoint == 2)
-            {
-                lifeImage = lifeImages[1];
-            }
             else
             {
                 lifeImage = lifeImages[2];
