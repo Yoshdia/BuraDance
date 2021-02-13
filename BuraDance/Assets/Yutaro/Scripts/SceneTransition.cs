@@ -90,4 +90,45 @@ public class SceneTransition : MonoBehaviour
 
         SceneManager.sceneLoaded -= GameSceneLoaded;
     }
+
+
+
+    //-------------------------------------------------------
+    // 各シーンへの遷移関数
+    //-------------------------------------------------------
+    /// <summary>
+    /// タイトル
+    /// </summary>
+    public void ToTitleScene()
+    {
+        SceneManager.LoadScene("TitleScene");
+    }
+    /// <summary>
+    /// ゲームシーン
+    /// </summary>
+    public void ToGameMain()
+    {
+        SceneManager.LoadScene("GameMain");
+    }
+    /// <summary>
+    /// リザルトシーン
+    /// </summary>
+    public void ToResultScene()
+    {
+        SceneManager.LoadScene("ResultScene");
+    }
+    /// <summary>
+    /// チュートリアルシーン
+    /// </summary>
+    public void ToTutorialScene()
+    {
+        SceneManager.LoadScene("TutorialScene");
+    }
+    /// <summary>
+    /// 広告シーン
+    /// </summary>
+    public void ToAdScene()
+    {
+        SceneManager.LoadScene("AdScene");
+    }
 }
