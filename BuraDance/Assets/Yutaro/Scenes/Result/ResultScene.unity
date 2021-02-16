@@ -1173,6 +1173,31 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 135133881539597124}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1860318900 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 135133882082429725, guid: 0980dad6f3c18794cb926cb4b29ee2c5,
+    type: 3}
+  m_PrefabInstance: {fileID: 135133881539597124}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1860318902
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1860318900}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d9b4f5ea3a61a7f41abdc4e0b06682ff, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1869589009
 GameObject:
   m_ObjectHideFlags: 0
@@ -1313,16 +1338,41 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1662033442}
     m_Modifications:
+    - target: {fileID: 135133882082429725, guid: 0980dad6f3c18794cb926cb4b29ee2c5,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 135133882475612731, guid: 0980dad6f3c18794cb926cb4b29ee2c5,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 441599696}
+    - target: {fileID: 135133882475612868, guid: 0980dad6f3c18794cb926cb4b29ee2c5,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 135133882668534120, guid: 0980dad6f3c18794cb926cb4b29ee2c5,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 441599696}
+      objectReference: {fileID: 1660045394}
+    - target: {fileID: 135133882668534120, guid: 0980dad6f3c18794cb926cb4b29ee2c5,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToAdScene
+      objectReference: {fileID: 0}
+    - target: {fileID: 135133882668534120, guid: 0980dad6f3c18794cb926cb4b29ee2c5,
+        type: 3}
+      propertyPath: m_Colors.m_SelectedColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 135133882668534121, guid: 0980dad6f3c18794cb926cb4b29ee2c5,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 135133882949702504, guid: 0980dad6f3c18794cb926cb4b29ee2c5,
         type: 3}
       propertyPath: m_Camera
