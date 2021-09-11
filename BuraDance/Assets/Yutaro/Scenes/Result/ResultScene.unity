@@ -1361,7 +1361,7 @@ PrefabInstance:
     - target: {fileID: 135133882668534120, guid: 0980dad6f3c18794cb926cb4b29ee2c5,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ToAdScene
+      value: ToTitleScene
       objectReference: {fileID: 0}
     - target: {fileID: 135133882668534120, guid: 0980dad6f3c18794cb926cb4b29ee2c5,
         type: 3}

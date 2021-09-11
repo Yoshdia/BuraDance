@@ -131,4 +131,22 @@ public class SceneTransition : MonoBehaviour
     {
         SceneManager.LoadScene("AdScene");
     }
+
+    /// <summary>
+    /// ゲームの強制終了
+    /// </summary>
+    public void QuitGame()
+    {
+
+    #if UNITY_EDITOR
+
+        UnityEditor.EditorApplication.isPlaying = false;
+
+    #else
+
+        UnityEngine.Application.Quit();
+
+    #endif
+
+    }
 }
